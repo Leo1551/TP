@@ -78,13 +78,9 @@ typedef struct{
 }Pokemon;
 
 
-int* str_stats_to_int_array(char *str);
-int* init_bst(char *nome);
+char* init_bst(char *nome);
 Move* init_moves(char *moves_str);
 int* init_types(char *nome);
 Pokemon init_pokemon(char *nome, char *evs, char *ivs, char *moves);
-void dmg_calc(void);
-void show_info(Pokemon p);
-void save_turno(void);
 
 #endif // POKEMON_H

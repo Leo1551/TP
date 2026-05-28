@@ -1,0 +1,72 @@
+Normal 1
+Weaknesses: Fighting.
+Resistances: .
+Immunities: Ghost.
+Fire 2
+Weaknesses: Ground, Rock, Water.
+Resistances: Bug, Fairy, Fire, Grass, Ice, Steel.
+Immunities: Burn.
+Water 3
+Weaknesses: Electric, Grass.
+Resistances: Fire, Ice, Steel, Water.
+Immunities: .
+Grass 4
+Weaknesses: Bug, Fire, Flying, Ice, Poison.
+Resistances: Electric, Grass, Ground, Water.
+Immunities: .
+Electric 5 
+Weaknesses: Ground.
+Resistances: Electric, Flying, Steel.
+Immunities: Paralysis.
+Ice 6
+Weaknesses: Fighting, Fire, Rock, Steel.
+Resistances: Ice.
+Immunities: Freeze.
+Fighting 7
+Weaknesses: Fairy, Flying, Psychic.
+Resistances: Bug, Dark, Rock.
+Immunities: .
+Poison 8
+Weaknesses: Ground, Psychic.
+Resistances: Bug, Fairy, Fighting, Grass, Poison.
+Immunities: Toxic.
+Ground 9
+Weaknesses: Grass, Ice, Water.
+Resistances: Poison, Rock.
+Immunities: Electric.
+Rock 10
+Weaknesses: Fighting, Grass, Ground, Steel, Water.
+Resistances: Fire, Flying, Normal, Poison.
+Immunities: .
+Flying 11
+Weaknesses: Electric, Ice, Rock.
+Resistances: Bug, Fighting, Grass.
+Immunities: Ground.
+Psychic 12
+Weaknesses: Bug, Dark, Ghost.
+Resistances: Fighting, Psychic.
+Immunities: .
+Bug 13
+Weaknesses: Fire, Flying, Rock.
+Resistances: Fighting, Grass, Ground.
+Immunities: .
+Ghost 14
+Weaknesses: Dark, Ghost.
+Resistances: Bug, Poison.
+Immunities: Fighting, Normal.
+Steel 15
+Weaknesses: Fighting, Fire, Ground.
+Resistances: Bug, Dragon, Fairy, Flying, Grass, Ice, Normal, Psychic, Rock, Steel.
+Immunities: Poison, Toxic.
+Dragon 16
+Weaknesses: Dragon, Fairy, Ice.
+Resistances: Electric, Fire, Grass, Water.
+Immunities: .
+Dark 17
+Weaknesses: Bug, Fairy, Fighting.
+Resistances: Dark, Ghost.
+Immunities: Psychic.
+Fairy 18
+Weaknesses: Poison, Steel.
+Resistances: Bug, Dark, Fighting.
+Immunities: Dragon.
