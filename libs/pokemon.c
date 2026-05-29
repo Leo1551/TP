@@ -50,7 +50,8 @@ Pokemon init_pokemon(char *nome, char *evs, char *ivs, char *moves){
         .moves           = {move ? move[0] : (Move){0}, move ? move[1] : (Move){0}, move ? move[2] : (Move){0}, move ? move[3] : (Move){0}},
         .statusCondition = OK,
         .types           = {types ? types[0] : 0, types ? types[1] : 0},
-        .multi           = {1, 1, 1, 1, 1, 1}
+        .multi           = {1, 1, 1, 1, 1, 1},
+        .moveCondition   = OK
     };
 
     free(bst);

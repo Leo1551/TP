@@ -38,6 +38,7 @@ typedef struct{
     float m_spd;
     float m_spe;
     float m_acc;
+    float m_evasion;
 
 }PokemonMultiplicadores; // 6 campos
 
@@ -50,22 +51,38 @@ typedef struct{
 */
 typedef struct{
     short int type;
-    short int categoria;
+    short int categoria; //physical = 1, special = 2, status = 3
     short int base_dmg;
     short int base_acc;
+    short int blocked_turns; // 0 se não estiver bloqueado
     void (*funcao)(int);
 }Move;
 
 
 typedef enum{
-
     OK = 0,
-    BURN = 1, // dano *= 1/2
-    FREEZE = 2, // 20% de chance de sair e poder atacar no turno
-    PARALYZE = 3, // (Speed *= 1/2) (Chance de atacar = 75%)
-    POISON = 4, // hp -= (max_hp * 7/8) 
-    BADLY_POISON = 5 // hp -= (max_hp * 1/16 * (qtd_turnos)) 
+    BURN = 1,           // dano *= 1/2
+    FREEZE = 2,         // Condição pré-ataque (20% de virar OK)
+    PARALYZE = 3,       // Condição pré-ataque (25% de impedir uso de move) + (Speed *= 1/2)
+    POISON = 4,         // hp -= (max_hp * 7/8) 
+    BADLY_POISON = 5,   // hp -= (max_hp * 1/16 * (qtd_turnos)) 
+    SLEEP = 6,          //
+    RESTING = 7,
+    CONFUSED = 8 
 }StatusCondition;
+
+typedef enum{
+    OK,
+    IN_CHARGE,
+    BLASTED, 
+    FLYING, 
+    DIVE,
+    DIG,
+    BIND,    //condição pós-turno
+    MIST,
+    BIDE,
+    SEED
+}MoveCondition;
 
 typedef struct{
     PokemonStats base_stats;
@@ -74,6 +91,7 @@ typedef struct{
     PokemonMultiplicadores multi;
     StatusCondition statusCondition;
     Move moves[4];
+    MoveCondition moveCondition;
     short int types[2];
 }Pokemon;
 
