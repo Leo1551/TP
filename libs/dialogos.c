@@ -30,27 +30,32 @@ Pokemon* criar_time(int tamanho){
     limpar_buffer_de_teclado();
     for (int i = 0; i < tamanho; i++){
         
-        printf("Insira o nome do seu %dº Pokémon: ", i + 1);
-        // Insere nome do pokémon
-        if (!fgets(nome_buf, sizeof(nome_buf), stdin)) nome_buf[0] = '\0';
-        nome_buf[strcspn(nome_buf, "\n")] = '\0';
-        capitalizarPalavras(nome_buf);
-
-        printf("\nInsira os EVs (formato: HP/Atk/Def/Spa/Spd/Speed):\nEx: (252/0/0/4/0/252) note que 252 é o máximo por stat e o total é de 510 EVs para distribuir");
-        // Insere EVs
-        if (!fgets(evs_buf, sizeof(evs_buf), stdin)) evs_buf[0] = '\0';
-        evs_buf[strcspn(evs_buf, "\n")] = '\0';
-
-        printf("Insira os IVs (formato: HP/Atk/Def/Spa/Spd/Speed):\n Ex: (31/31/31/31/31/31) note que o máximo é 31 por IV");
-        // Insere IVs
-        if (!fgets(ivs_buf, sizeof(ivs_buf), stdin)) ivs_buf[0] = '\0';
-        ivs_buf[strcspn(ivs_buf, "\n")] = '\0';
-
+        do{
+            printf("Insira o nome do seu %dº Pokémon: ", i + 1);
+        } while (!fgets(nome_buf, sizeof(nome_buf), stdin));
+        
+        do{ //Insere EVs
+            printf("\nInsira os EVs (formato: HP/Atk/Def/Spa/Spd/Speed):\nEx: (252/0/0/4/0/252) note que 252 é o máximo por stat e o total é de 510 EVs para distribuir");
+        } while(!fgets(evs_buf, sizeof(evs_buf), stdin)); 
+        
+        do{ // Insere IVs
+            printf("Insira os IVs (formato: HP/Atk/Def/Spa/Spd/Speed):\n Ex: (31/31/31/31/31/31) note que o máximo é 31 por IV");
+        } while (!fgets(ivs_buf, sizeof(ivs_buf), stdin));
+        
+        do{
         printf("Insira os moves (separados por /):\n");
         //Insere moves
-        if (!fgets(moves_buf, sizeof(moves_buf), stdin)) moves_buf[0] = '\0';
-        moves_buf[strcspn(moves_buf, "\n")] = '\0';
+        } while(!fgets(moves_buf, sizeof(moves_buf), stdin));
+        
+        // aplica o terminador em tudo
+        trocar_quebra_de_linha_por_terminador(nome_buf);
+        trocar_quebra_de_linha_por_terminador(evs_buf);
+        trocar_quebra_de_linha_por_terminador(ivs_buf);
+        trocar_quebra_de_linha_por_terminador(moves_buf);
+
+        //capitaliza nome e moves inseridos
         capitalizarPalavras(nome_buf);
+        capitalizarPalavras(moves_buf);
 
         time[i] = init_pokemon(nome_buf, evs_buf, ivs_buf, moves_buf);
     }

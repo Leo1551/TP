@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+
 typedef struct{
     unsigned short int base_hp;
     unsigned short int base_atk;
@@ -50,6 +51,7 @@ typedef struct{
 
 */
 typedef struct{
+    char *nome;
     short int type;
     short int categoria; //physical = 1, special = 2, status = 3
     short int base_dmg;

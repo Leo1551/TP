@@ -25,3 +25,6 @@ void capitalizarPalavras(char *str) {
         }
     }
 }
+void trocar_quebra_de_linha_por_terminador(char *str){
+    str[strcspn(str, "\n")] = '\0';
+}

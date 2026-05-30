@@ -5,8 +5,6 @@
 int main(){
 
 
-    // 1º inicialização de variaveis
-
     Player players[2];
     int *tamanho = get_tamanho_times();
 
@@ -16,7 +14,7 @@ int main(){
     players[1].time     = criar_time(tamanho[1]);
     players[1].tam_time = tamanho[1];
     
-    
+    iniciar_batalha(players[0], players[1]);
     return 0;
 }
 
