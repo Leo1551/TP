@@ -4,12 +4,11 @@
 #include <headers/erro.h>
 #include <headers/pokemon.h>
 
-// Types and prototypes are declared in headers/pokemon.h
 static int* str_stats_to_int_array(char *str){
-    int *valores = malloc(6 * sizeof(int));
-    if (!valores) return NULL;
-    for (int k = 0; k < 6; ++k) valores[k] = 0;
-
+    
+    int *valores = calloc(6, sizeof(int));
+    
+    if (!valores) return NULL;  
     if (str == NULL) return valores;
 
     char *s = strdup(str);
@@ -44,14 +43,27 @@ Pokemon init_pokemon(char *nome, char *evs, char *ivs, char *moves){
     
 
     Pokemon pokemon = {
-        .base_stats      = {bst ? bst[0] : 0, bst ? bst[1] : 0, bst ? bst[2] : 0, bst ? bst[3] : 0, bst ? bst[4] : 0, bst ? bst[5] : 0},
-        .evs             = {ev_arr ? ev_arr[0] : 0, ev_arr ? ev_arr[1] : 0, ev_arr ? ev_arr[2] : 0, ev_arr ? ev_arr[3] : 0, ev_arr ? ev_arr[4] : 0, ev_arr ? ev_arr[5] : 0},
-        .ivs             = {iv_arr ? iv_arr[0] : 0, iv_arr ? iv_arr[1] : 0, iv_arr ? iv_arr[2] : 0, iv_arr ? iv_arr[3] : 0, iv_arr ? iv_arr[4] : 0, iv_arr ? iv_arr[5] : 0},
-        .moves           = {move ? move[0] : (Move){0}, move ? move[1] : (Move){0}, move ? move[2] : (Move){0}, move ? move[3] : (Move){0}},
-        .statusCondition = OK,
-        .types           = {types ? types[0] : 0, types ? types[1] : 0},
+        .base_stats      = {
+                                calc_hp (bst[0], ev_arr[0], iv_arr[0]),  // hp
+                                calc_bst(bst[1], ev_arr[1], iv_arr[1]), // atk
+                                calc_bst(bst[2], ev_arr[2], iv_arr[2]), // def
+                                calc_bst(bst[3], ev_arr[3], iv_arr[3]), // spa
+                                calc_bst(bst[4], ev_arr[4], iv_arr[4]), // spd
+                                calc_bst(bst[5], ev_arr[5], iv_arr[5])  // spe
+                            },
+        .moves           = {
+                                move ? move[0] : (Move){NULL}, 
+                                move ? move[1] : (Move){NULL}, 
+                                move ? move[2] : (Move){NULL}, 
+                                move ? move[3] : (Move){NULL}
+                            },
+        .types           = {
+                            types ? types[0] : 1, 
+                            types ? types[1] : 1
+                            },
         .multi           = {1, 1, 1, 1, 1, 1},
-        .moveCondition   = OK
+        .statusCondition = OK,
+        .moveCondition   = NONE
     };
 
     free(bst);

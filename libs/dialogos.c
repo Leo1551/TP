@@ -63,8 +63,13 @@ Pokemon* criar_time(int tamanho){
     return time;
 }
 
+void inicia_batalha(Player player1, Player player2){
 
+    int poke_player1 = player1.tam_time, poke_player2 = player2.tam_time;
 
+    while (player1.tam_time != 0 || player2.tam_time != 0) // se quem vence é 1 -> 2 perde um poke
+        (quem_vence(player1.time[poke_player1], player2.time[poke_player2]) == 1) ? poke_player2-- : poke_player1--;
+}
 
 int* captar_stats(int max_por_stat, int max_total){
     int *stat = malloc(6 * sizeof(int));

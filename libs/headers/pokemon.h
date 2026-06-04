@@ -44,6 +44,9 @@ typedef struct{
 }PokemonMultiplicadores; // 6 campos
 
 
+// este typedef serve para que seja feito um ponteiro para todas as funções que terão algum efeito
+typedef int (*Efeito)(Pokemon, Pokemon, int);
+
 /*
     Cada move terá suas específicações guardadas em um arquivo *possivelmente moves.txt*
 
@@ -56,8 +59,8 @@ typedef struct{
     short int categoria; //physical = 1, special = 2, status = 3
     short int base_dmg;
     short int base_acc;
-    short int blocked_turns; // 0 se não estiver bloqueado
-    void (*funcao)(int);
+    short int blocked_turns; // 0 se não estiver bloqueado, causado por taunt ou disable
+    Efeito funcao_move;// int de target 0 = self, 1 = adjacent
 }Move;
 
 
@@ -74,7 +77,7 @@ typedef enum{
 }StatusCondition;
 
 typedef enum{
-    OK,
+    NONE,
     IN_CHARGE,
     BLASTED, 
     FLYING, 
@@ -88,19 +91,11 @@ typedef enum{
 
 typedef struct{
     PokemonStats base_stats;
-    PokemonIVs ivs;
-    PokemonEVs evs;
     PokemonMultiplicadores multi;
     StatusCondition statusCondition;
     Move moves[4];
     MoveCondition moveCondition;
     short int types[2];
 }Pokemon;
-
-
-char* init_bst(char *nome);
-Move* init_moves(char *moves_str);
-int* init_types(char *nome);
-Pokemon init_pokemon(char *nome, char *evs, char *ivs, char *moves);
 
 #endif // POKEMON_H

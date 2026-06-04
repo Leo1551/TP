@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "headers/pokemon.h"
+#include "utilidades.h"
 
 char* init_bst(char *nome){
 
@@ -21,16 +22,37 @@ char* init_bst(char *nome){
 }
 
 Move* init_moves(char *moves_str){
+
+    substituir_espaco_por_underline(moves_str);
     Move *moves = malloc(4 * sizeof(Move));
-    if (!moves) return NULL;
-    for (int i = 0; i < 4; ++i){
-        moves[i].type = 0;
-        moves[i].categoria = 0;
-        moves[i].base_dmg = 0;
-        moves[i].base_acc = 0;
-        moves[i].funcao = NULL;
+    char move_str[4][100];
+    char funcao_move[100];
+    int target;
+    sscanf(moves_str, "%[^/] %[^/] %[^/] %[^\n]", move_str[0], move_str[1], move_str[2], move_str[3]);
+
+
+    for (int i = 0; i < 4; i++){
+        FILE *arq = achar_string_em_arquivo(move_str[i], "arquivos/moves.txt");
+        
+        if (!arq){
+            move_nao_encontrado_exception(move_str[i], "arquivos/moves.txt");
+            return NULL;
+        }
+
+        moves[i].nome = move_str[i];
+
+        fscanf(arq, "%d %d", &moves[i].type, &moves[i].categoria);
+        fscanf(arq, "%d %d", &moves[i].base_dmg, &moves[i].base_acc);
+        fscanf(arq, "%s %d", &funcao_move, &target);
+
+        moves[i].funcao_move = init_move_effect(funcao_move, target);
+        moves[i].blocked_turns = 0;
+        fclose(arq);
     }
+
+    
     return moves;
+
 }
 
 int* init_types(char *nome){
@@ -70,16 +92,14 @@ int* init_dualtype(const char *tipo1, const char *tipo2){
     return dualtype;
 }
 
-FILE* achar_string_em_arquivo(char *nome, char *filename){
-    FILE *f = fopen(filename, "r");
-    if (!f) string_nao_encontrada_exception(nome, filename);
-    char buffer[64];
-
-    while (fscanf(f, " %63[^ ]", buffer) == 1)
-        if (strcmp(buffer, nome) == 0) 
-            return f;
+Efeito init_move_effect(char *funcao_move, int target){
     
-    fclose(f);
-
-    return NULL;
+    if (funcao_move == "None")
+        return NULL;
+    if ()
+    {
+        /* code */
+    }
+    
+    
 }
