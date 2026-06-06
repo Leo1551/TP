@@ -11,6 +11,15 @@ typedef struct{
     unsigned short int base_spa;
     unsigned short int base_spd;
     unsigned short int base_spe;
+}PokemonBaseStats;
+
+typedef struct{
+    unsigned short int base_hp;
+    unsigned short int base_atk;
+    unsigned short int base_def;
+    unsigned short int base_spa;
+    unsigned short int base_spd;
+    unsigned short int base_spe;
 }PokemonStats;
 
 typedef struct{
@@ -43,10 +52,6 @@ typedef struct{
 
 }PokemonMultiplicadores; // 6 campos
 
-
-// este typedef serve para que seja feito um ponteiro para todas as funções que terão algum efeito
-typedef int (*Efeito)(Pokemon, Pokemon, int);
-
 /*
     Cada move terá suas específicações guardadas em um arquivo *possivelmente moves.txt*
 
@@ -60,7 +65,8 @@ typedef struct{
     short int base_dmg;
     short int base_acc;
     short int blocked_turns; // 0 se não estiver bloqueado, causado por taunt ou disable
-    Efeito funcao_move;// int de target 0 = self, 1 = adjacent
+    char *funcao_move;// recebe o pipe com as funções que devem ser executadas em uma possível função cause_effect(Pokemon atk, Pokemon recebe, int target)
+    short int target;
 }Move;
 
 
@@ -73,8 +79,14 @@ typedef enum{
     BADLY_POISON = 5,   // hp -= (max_hp * 1/16 * (qtd_turnos)) 
     SLEEP = 6,          //
     RESTING = 7,
-    CONFUSED = 8 
+    CONFUSED = 8, 
+}Condition;
+
+typedef struct {
+    Condition condition;
+    unsigned short int turnos;
 }StatusCondition;
+
 
 typedef enum{
     NONE,
@@ -90,12 +102,21 @@ typedef enum{
 }MoveCondition;
 
 typedef struct{
-    PokemonStats base_stats;
+    char *nome;
+    PokemonBaseStats base_stats;
+    PokemonStats actual_stats;
     PokemonMultiplicadores multi;
     StatusCondition statusCondition;
     Move moves[4];
-    MoveCondition moveCondition;
+    MoveCondition *moveCondition;
     short int types[2];
 }Pokemon;
 
+// este typedef serve para que seja feito um ponteiro para todas as funções que terão algum efeito
+typedef int (*Efeito)(Pokemon, Pokemon, int);
+
+
+Pokemon init_pokemon(char *nome, char *evs, char *ivs, char *moves);
+int* str_stats_to_int_array(char *str);
+void show_info(Pokemon pokemon);
 #endif // POKEMON_H

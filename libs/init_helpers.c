@@ -39,14 +39,15 @@ Move* init_moves(char *moves_str){
             return NULL;
         }
 
-        moves[i].nome = move_str[i];
-
         fscanf(arq, "%d %d", &moves[i].type, &moves[i].categoria);
         fscanf(arq, "%d %d", &moves[i].base_dmg, &moves[i].base_acc);
         fscanf(arq, "%s %d", &funcao_move, &target);
-
-        moves[i].funcao_move = init_move_effect(funcao_move, target);
+        
+        moves[i].nome = move_str[i];
+        moves[i].funcao_move = funcao_move;
+        moves[i].target = target;
         moves[i].blocked_turns = 0;
+        
         fclose(arq);
     }
 
@@ -90,16 +91,4 @@ int* init_dualtype(const char *tipo1, const char *tipo2){
     dualtype[1] = init_monotype(tipo2);
 
     return dualtype;
-}
-
-Efeito init_move_effect(char *funcao_move, int target){
-    
-    if (funcao_move == "None")
-        return NULL;
-    if ()
-    {
-        /* code */
-    }
-    
-    
 }
