@@ -25,19 +25,18 @@ int* str_stats_to_int_array(char *str){
     return valores;
 }
 
-Pokemon init_pokemon(char *nome, char *evs, char *ivs, char *moves){
+Pokemon init_pokemon(char *nome, int *evs, int *ivs, char *moves){
     
     int *bst = str_stats_to_int_array(init_bst(nome));
-    if (bst == NULL)
+    if (bst == NULL){
         nome_pokemon_exception(nome);
-    
-    int *ev_arr = str_stats_to_int_array(evs);
-
-    int *iv_arr = str_stats_to_int_array(ivs);
+        return (Pokemon){.nome = NULL};
+    }
+        
 
     Move *move = init_moves(moves);
-
     int *types = init_types(nome);
+
     if (types == NULL)
         tipos_exception(nome);
     
@@ -45,20 +44,20 @@ Pokemon init_pokemon(char *nome, char *evs, char *ivs, char *moves){
     Pokemon pokemon = {
         .nome = nome,
         .base_stats      = { //esses serão constantes
-                                calc_hp (bst[0], ev_arr[0], iv_arr[0]), // hp
-                                calc_bst(bst[1], ev_arr[1], iv_arr[1]), // atk
-                                calc_bst(bst[2], ev_arr[2], iv_arr[2]), // def
-                                calc_bst(bst[3], ev_arr[3], iv_arr[3]), // spa
-                                calc_bst(bst[4], ev_arr[4], iv_arr[4]), // spd
-                                calc_bst(bst[5], ev_arr[5], iv_arr[5])  // spe
+                                calc_hp (bst[0], evs[0], evs[0]), // hp
+                                calc_bst(bst[1], evs[1], evs[1]), // atk
+                                calc_bst(bst[2], evs[2], evs[2]), // def
+                                calc_bst(bst[3], evs[3], evs[3]), // spa
+                                calc_bst(bst[4], evs[4], evs[4]), // spd
+                                calc_bst(bst[5], evs[5], evs[5])  // spe
                             },
         .actual_stats    = {    // esses não serão variáveis
-                                calc_hp (bst[0], ev_arr[0], iv_arr[0]), // hp
-                                calc_bst(bst[1], ev_arr[1], iv_arr[1]), // atk
-                                calc_bst(bst[2], ev_arr[2], iv_arr[2]), // def
-                                calc_bst(bst[3], ev_arr[3], iv_arr[3]), // spa
-                                calc_bst(bst[4], ev_arr[4], iv_arr[4]), // spd
-                                calc_bst(bst[5], ev_arr[5], iv_arr[5])  // spe
+                                calc_hp (bst[0], evs[0], evs[0]), // hp
+                                calc_bst(bst[1], evs[1], evs[1]), // atk
+                                calc_bst(bst[2], evs[2], evs[2]), // def
+                                calc_bst(bst[3], evs[3], evs[3]), // spa
+                                calc_bst(bst[4], evs[4], evs[4]), // spd
+                                calc_bst(bst[5], evs[5], evs[5])  // spe
                             
                             },
         .moves           = {    // os moves que não foram settados devem ser nulos para os dialogos fluirem
@@ -77,14 +76,13 @@ Pokemon init_pokemon(char *nome, char *evs, char *ivs, char *moves){
     };
 
     free(bst);
-    free(ev_arr);
-    free(iv_arr);
+    free(evs);
+    free(evs);
     free(move);
     free(types);
 
     return pokemon;
 }
-
 
 void show_info(Pokemon pokemon){
     printf("\n\n=================%s=======================\n", pokemon.nome);

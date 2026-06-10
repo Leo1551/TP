@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+
+#include "moves.h"
 #include "utilidades.h"
 #include "pokemon.h"
 
@@ -7,7 +10,7 @@ void limpar_buffer_de_teclado(){
     short int c; while ((c = getchar()) != '\n' && c != EOF);
 }
 
-char* show_status_condition(Condition condition){
+char* show_status_condition(SCondition condition){
     if (condition == OK)
         return "Sem status";
     if (condition == BURN)
@@ -27,6 +30,7 @@ char* show_status_condition(Condition condition){
     
     return "Não pode ser computado";    
 }
+
 char* int_type_to_string(int type){
     char tipo_convertido;
     char *tipo_search;
@@ -38,6 +42,7 @@ char* int_type_to_string(int type){
     return tipo_search;
 
 }
+
 char* int_category_to_string(int categoria){
     switch (categoria)
     {
@@ -103,7 +108,18 @@ int calc_hp(int bst, int ev, int iv){// todos os pokes são lv 100
     // esses (int) são pra fazer a função floor
     return (100 * (int) (((2 * (bst + iv)) + (int) (ev/4) + 100)/100)) + 100 + 10;
 }
-char* other_conditions_to_string(MoveCondition *conditions){
+
+int search_indice_move(Move *moves, char *move){
+
+    int indice = -1; // caso nenhum move esteja certo, joga o erro -1
+    for (int i = 0; i < 4; i++)
+        if (strcmp(move, moves[i].nome) == 0)
+            indice = i;
+        
+    return indice;
+}
+
+char* other_conditions_to_string(MCondition *conditions){
     int tam = sizeof(conditions)/sizeof(MoveCondition);
     char buffer[1000];
 
@@ -111,7 +127,7 @@ char* other_conditions_to_string(MoveCondition *conditions){
         if (conditions[i] == NONE)
             return "None";
         else if (conditions[i] == IN_CHARGE)
-            strcat(buffer, "Carregando move ");
+            strcat(buffer, "Carregando move");
         else if(conditions[i] == BLASTED)
             strcat(buffer, "Recarregando energias");
         else if(conditions[i] == FLYING)
@@ -134,4 +150,112 @@ char* other_conditions_to_string(MoveCondition *conditions){
 
     return buffer;
     
+}
+
+void move_calc(Pokemon *ataca, Pokemon *recebe, int indice_move, char *log){
+
+
+    strcat(log, ataca->nome);
+    strcat(log, " usou ");
+    strcat(log, ataca->moves[indice_move].nome);
+    strcat(log, "!\n");
+
+    if (!acertou_movimento())
+    {
+        strcat(log, recebe->nome);
+        strcat(log, " desviou do movimento adversário\n");
+        return;
+    }
+
+    if (ataca->moves[indice_move].categoria != STATUS)
+    {    
+        dmg_calc(ataca, recebe, indice_move, log);
+    }
+
+    effect_calc(ataca, recebe, ataca->moves[indice_move].funcao_move, log);
+    
+}
+
+void dmg_calc(Pokemon *ataca, Pokemon *recebe, int indice, char *log){
+
+    int dano = ataca->moves->base_dmg;
+
+    if (ataca->moves[indice].categoria == SPECIAL)
+    {
+        int special_attack = ataca->actual_stats.base_spa;
+        int special_defense = recebe->actual_stats.base_spd;
+
+        recebe->actual_stats.base_hp -= (int) modificadores(ataca, recebe, indice) * (2 + (42 * (dano * special_attack/special_defense)/50));
+    }
+    else
+    {
+        int attack = ataca->actual_stats.base_atk;
+        int defense = recebe->actual_stats.base_def;
+        
+        recebe->actual_stats.base_hp -= (int) modificadores(ataca, recebe, indice) * (2 + (42 * (dano * attack/defense)/50));
+    }
+    
+}
+
+void effect_calc(Pokemon *ataca, Pokemon *recebe, char *str_effect, char *log){
+
+}
+
+int modificadores(Pokemon *ataca, Pokemon *recebe, int indice){
+
+    int multiplicador = 1;
+
+    //STAB
+    if (is_stab(ataca->types[0], ataca->types[1], ataca->moves[indice].type))
+        multiplicador *= 1.5;
+
+    //multiplicadores de bst
+    if (ataca->moves[indice].categoria == SPECIAL)
+    {
+        multiplicador *= calcular_nivel_multiplicador(ataca->multi.m_spa);
+        multiplicador *= calcular_nivel_multiplicador(recebe->multi.m_spd);
+    }
+    else
+    {
+        multiplicador *= calcular_nivel_multiplicador(ataca->multi.m_atk);
+        multiplicador *= calcular_nivel_multiplicador(recebe->multi.m_def);
+    }
+
+    //Critical hit
+    if (will_cause_critical(ataca->moveCondition, ataca->moves[indice].funcao_move))
+        multiplicador *= 1.5;
+    
+    multiplicador *= calcula_super_efetividade(ataca->moves[indice].type, recebe->types);
+    
+
+    
+
+    return multiplicador;
+}
+
+float calcular_nivel_multiplicador(int nivel){
+    switch (nivel)
+    {
+    case -6: return;
+    case -5: return;
+    case -4: return;
+    case -3: return;
+    case -2: return;
+    case -1: return;
+    case 0: return;
+    case 1: return;
+    case 2: return;
+    case 3: return;
+    case 4: return;
+    case 5: return;
+    default: return ;
+    }
+}
+int calcula_super_efetividade();
+
+int prioridade_por_velocidade(short int a, short int b){
+    if (a == b) // speed tie gera uma condição randomica de quem vai primeiro
+        return (rand() % 2) + 1;
+    
+    return (a > b) ? 1 : 2;
 }

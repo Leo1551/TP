@@ -6,6 +6,10 @@
 //moves de (force switch, weight damage, priority, screens, conversion,mirrior move, transform) não serão implementados
 
 
+void cause_move_effect(Pokemon *ataca, Pokemon *recebe, char *str);
+
+
+
 /*
     Essa função precisa calcular a chance de tal poke receber um Status Condition (definido em StatusCondition em pokemon.h)
     Isso levará em conta apenas a chance do efeito do move ser aplicado
@@ -14,8 +18,9 @@ void cause_status_condition(Pokemon *pokemon, StatusCondition tipo, float chance
 
 /*
     Ex: Dig, Dive, Fly, LeechSeed, bla, bla bla
+    quando turnos = -1, a condição é infinita
 */
-void cause_move_condition(Pokemon *pokemon, MoveCondition condicao);
+void cause_move_condition(Pokemon *pokemon, MoveCondition condicao, int turnos);
 
 /*
     Vai botar StatusCondition = OK
@@ -51,7 +56,7 @@ void cause_turn_wait(Pokemon *pokemon, MoveCondition condition);
 
     https://bulbapedia.bulbagarden.net/wiki/Critical_hit#Probability_2
 */
-int will_cause_critical(int grau_move);
+int will_cause_critical(MoveCondition *conditions, char *effect);
 
 /*
 
@@ -138,3 +143,5 @@ void psywave();
 void superfang();
 void bide();
 void dream_eater();
+
+int is_stab(int tipo1, int tipo2, int tipo_move);

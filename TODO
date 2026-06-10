@@ -1,0 +1,9 @@
+utilidades.c
+    - calcula_super_efetividade
+    - calcular_nivel_multiplicador
+log.c
+    - Criar sisteminha pra criar arquivo com id único
+    Tudo.
+moves.c
+    - cause_move_effect
+    Tudo.

@@ -7,10 +7,12 @@ int main(){
 
     Player players[2];
     int *tamanho = get_tamanho_times();
-
+    
+    players[0].nome     = inserir_nome();
     players[0].time     = criar_time(tamanho[0]);
     players[0].tam_time = tamanho[0];
     
+    players[1].nome     = inserir_nome();
     players[1].time     = criar_time(tamanho[1]);
     players[1].tam_time = tamanho[1];
     

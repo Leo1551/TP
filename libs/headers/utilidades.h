@@ -2,6 +2,7 @@
 #ifndef UTILIDADES_H
 #define UTILIDADES_H
 
+// Utilidades gerais de string e arquivos
 void limpar_buffer_de_teclado(void);
 void capitalizarPalavras(char *str);
 void trocar_quebra_de_linha_por_terminador(char *str);
@@ -9,9 +10,44 @@ FILE* achar_string_em_arquivo(char *nome, char *filename);
 int calc_bst(int bst, int ev, int iv);
 int calc_hp(int bst, int ev, int iv);
 
+
 // para pokemon.c -> show_stats
-char* show_status_condition(Condition condition);
+char* show_status_condition(SCondition condition);
 char* int_type_to_string(int type);
 char* int_category_to_string(int categoria);
-char* other_conditions_to_string(MoveCondition *conditions);
+char* other_conditions_to_string(MCondition *conditions);
+
+// para dialogos.c -> iniciar_batalha
+int search_indice_move(Move *moves, char *move);
+
+//fonte: https://calc.pokemonshowdown.com/, https://www.reddit.com/r/gamedesign/comments/hvrmyz/pok%C3%A9mon_damage_calculation_analysis/?tl=pt-br
+/*
+    Direciona moves de categoria STATUS de PHYSICAL/SPECIAL
+*/
+void move_calc(Pokemon *ataca, Pokemon *recebe, int indice_move, char *log);
+/*
+    Calcula o dano de moves PHYSICAL/SPECIAL
+*/
+void dmg_calc(Pokemon *ataca_primeiro, Pokemon *outro, int indice, char *log);
+/*
+    Realiza todos os efeitos de moves
+    será a última parte a ser desenvolvida.
+*/
+void effect_calc(Pokemon *ataca, Pokemon *recebe, char *str_effect, char *log);
+/*
+    Essa função é uma compressão dos seguintes fatores multiplicadores de dano:
+        - Roll (calculo da porcentagem de damage output que realmente será aplicado)
+        - Chance de critical hit
+        - Multiplicadores de ataque e defesa
+        - Efetividade de tipagem
+        - STAB (Same Type Attack Bonus)
+*/
+int modificadores(Pokemon *ataca, Pokemon *recebe, int indice);
+/*
+    Retorna quem vai atacar quem primeiro, em caso de empate, a decisão será randômica
+*/
+int prioridade_por_velocidade(short int a, short int b);
+
+
+
 #endif // UTILIDADES_H

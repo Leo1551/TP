@@ -4,6 +4,7 @@
 #include "pokemon.h"
 
 typedef struct Player{
+    char *nome;
     Pokemon *time;
     unsigned int tam_time;
 }Player;
