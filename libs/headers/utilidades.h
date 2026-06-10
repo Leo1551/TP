@@ -39,6 +39,7 @@ void effect_calc(Pokemon *ataca, Pokemon *recebe, char *str_effect, char *log);
         - Roll (calculo da porcentagem de damage output que realmente será aplicado)
         - Chance de critical hit
         - Multiplicadores de ataque e defesa
+            - https://www.serebii.net/games/stats.shtml
         - Efetividade de tipagem
         - STAB (Same Type Attack Bonus)
 */

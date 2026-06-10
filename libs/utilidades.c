@@ -233,24 +233,6 @@ int modificadores(Pokemon *ataca, Pokemon *recebe, int indice){
     return multiplicador;
 }
 
-float calcular_nivel_multiplicador(int nivel){
-    switch (nivel)
-    {
-    case -6: return;
-    case -5: return;
-    case -4: return;
-    case -3: return;
-    case -2: return;
-    case -1: return;
-    case 0: return;
-    case 1: return;
-    case 2: return;
-    case 3: return;
-    case 4: return;
-    case 5: return;
-    default: return ;
-    }
-}
 int calcula_super_efetividade();
 
 int prioridade_por_velocidade(short int a, short int b){

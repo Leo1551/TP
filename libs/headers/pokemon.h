@@ -49,8 +49,7 @@ typedef struct{
     float m_spe;
     float m_acc;
     float m_evasion;
-
-}PokemonMultiplicadores; // 6 campos
+}PokemonMultiplicadores; // 6 campos, todos devem variar de [-6 6]
 
 typedef enum{
     PHYSICAL = 1,
@@ -127,5 +126,12 @@ typedef struct{
 Pokemon init_pokemon(char *nome, char *evs, char *ivs, char *moves);
 int* str_stats_to_int_array(char *str);
 void show_info(Pokemon pokemon);
+
+/*
+    Os três servem para lidar com os multiplicadores de base stats (BST)
+*/
+float calcular_nivel_multiplicador(int nivel);
+float calcular_nivel_multiplicador_accuracy(int nivel);
+float calcular_nivel_multiplicador_evasion(int nivel);
 
 #endif // POKEMON_H

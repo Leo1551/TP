@@ -87,11 +87,12 @@ Pokemon init_pokemon(char *nome, int *evs, int *ivs, char *moves){
 void show_info(Pokemon pokemon){
     printf("\n\n=================%s=======================\n", pokemon.nome);
     printf("HP: %d/%d\n", pokemon.actual_stats.base_hp, pokemon.base_stats.base_hp);
-    printf("Atk: (%d) %d/%d\n", pokemon.multi.m_atk, pokemon.actual_stats.base_atk, pokemon.base_stats.base_atk);
-    printf("Atk: (%d) %d/%d\n", pokemon.multi.m_def, pokemon.actual_stats.base_def, pokemon.base_stats.base_def);
-    printf("Atk: (%d) %d/%d\n", pokemon.multi.m_spa, pokemon.actual_stats.base_spa, pokemon.base_stats.base_spa);
-    printf("Atk: (%d) %d/%d\n", pokemon.multi.m_spd, pokemon.actual_stats.base_spd, pokemon.base_stats.base_spd);
-    printf("Atk: (%d) %d/%d\n", pokemon.multi.m_spe, pokemon.actual_stats.base_spe, pokemon.base_stats.base_spe);
+    printf("Atk: (%d) %d/%d\n", pokemon.multi.m_atk, pokemon.actual_stats.base_atk * calcular_nivel_multiplicador(pokemon.multi.m_atk), pokemon.base_stats.base_atk);
+    printf("Def: (%d) %d/%d\n", pokemon.multi.m_def, pokemon.actual_stats.base_def * calcular_nivel_multiplicador(pokemon.multi.m_def), pokemon.base_stats.base_def);
+    printf("SpA: (%d) %d/%d\n", pokemon.multi.m_spa, pokemon.actual_stats.base_spa * calcular_nivel_multiplicador(pokemon.multi.m_spa), pokemon.base_stats.base_spa);
+    printf("SpD: (%d) %d/%d\n", pokemon.multi.m_spd, pokemon.actual_stats.base_spd * calcular_nivel_multiplicador(pokemon.multi.m_spd), pokemon.base_stats.base_spd);
+    printf("Spe: (%d) %d/%d\n", pokemon.multi.m_spe, pokemon.actual_stats.base_spe * calcular_nivel_multiplicador(pokemon.multi.m_spe), pokemon.base_stats.base_spe);
+    printf("Accuracy: %.2f Evasion: %.2f\n", calcular_nivel_multiplicador_accuracy(pokemon.multi.m_acc), calcular_nivel_multiplicador_evasion(pokemon.multi.m_evasion));
     printf("=============================================================\n");
     printf("Status Condition: %s (Turnos: %d)\n", show_status_condition(pokemon.statusCondition.condition), pokemon.statusCondition.turnos);
     printf("Other Conditions: %s", other_conditions_to_string(pokemon.moveCondition));
@@ -99,10 +100,65 @@ void show_info(Pokemon pokemon){
     for (int i = 0; i < 4; i++){
         printf("%s / %s / %s\n", pokemon.moves[i].nome, int_type_to_string(pokemon.moves[i].type), int_category_to_string(pokemon.moves[i].categoria));
         printf("\t dmg: %d\n", pokemon.moves[i].base_dmg);
-        printf("\t acc: %d\n", pokemon.moves[i].base_acc);
+        printf("\t acc: %.2f\n", pokemon.moves[i].base_acc * calcular_nivel_multiplicador_accuracy(pokemon.multi.m_acc));
         printf("\t Função: %s\n", pokemon.moves[i].funcao_move);
         printf("Turnos bloqueados: %d\n\n", pokemon.moves[i].blocked_turns);
     }
     printf("==============================================================\n\n");
 }
 
+float calcular_nivel_multiplicador(int nivel){
+    switch (nivel)
+    {
+    case -6: return 0.25;
+    case -5: return 0.285;
+    case -4: return 0.33;
+    case -3: return 0.4;
+    case -2: return 0.5;
+    case -1: return 0.66;
+    case 0: return 1;
+    case 1: return 1.5;
+    case 2: return 2;
+    case 3: return 2.5;
+    case 4: return 3;
+    case 5: return 3.5;
+    default: return 4;
+    }
+}
+
+float calcular_nivel_multiplicador_accuracy(int nivel){
+    switch (nivel)
+    {
+    case -6: return 0.33;
+    case -5: return 0.375;
+    case -4: return 0.428;
+    case -3: return 0.5;
+    case -2: return 0.6;
+    case -1: return 0.75;
+    case 0: return 1;
+    case 1: return 1.33;
+    case 2: return 1.66;
+    case 3: return 2;
+    case 4: return 2.33;
+    case 5: return 2.66;
+    default: return 3;
+    }
+}
+float calcular_nivel_multiplicador_evasion(int nivel){
+    switch (nivel)
+    {
+    case -6: return 3;
+    case -5: return 2.66;
+    case -4: return 2.33;
+    case -3: return 2;
+    case -2: return 1.66;
+    case -1: return 1.33;
+    case 0: return 1;
+    case 1: return 0.75;
+    case 2: return 0.6;
+    case 3: return 0.5;
+    case 4: return 0.428;
+    case 5: return 0.375;
+    default: return 0.33;
+    }
+}

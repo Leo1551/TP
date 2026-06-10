@@ -18,8 +18,7 @@ int gerar_id_batalha();
 
 /*
     Receberá uma string formatada com o que será exibido no terminal
-    e guardará no arquivo
-
+    e guardará no arquivo battle-log-<idbatalha>.txt
 */
 void gerar_log_turno(char *acoes, int turno);
 
