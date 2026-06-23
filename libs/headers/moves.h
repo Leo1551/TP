@@ -1,12 +1,15 @@
 #include "pokemon.h"
 
+#ifndef MOVES_H
+#define MOVES_H
+
 //todas os efeitos terão cause no início
 //todos os efeitos seguirão as leis da gen 6
 
 //moves de (force switch, weight damage, priority, screens, conversion,mirrior move, transform) não serão implementados
 
 
-void cause_move_effect(Pokemon *ataca, Pokemon *recebe, char *str);
+void cause_move_effect(Pokemon *ataca, Pokemon *recebe, char *log, int indice_move, int dano_bruto);
 
 
 
@@ -14,7 +17,7 @@ void cause_move_effect(Pokemon *ataca, Pokemon *recebe, char *str);
     Essa função precisa calcular a chance de tal poke receber um Status Condition (definido em StatusCondition em pokemon.h)
     Isso levará em conta apenas a chance do efeito do move ser aplicado
 */
-void cause_status_condition(Pokemon *pokemon, StatusCondition tipo, float chance_base_acerto);
+void cause_status_condition(Pokemon *pokemon, SCondition tipo, float chance_base_acerto);
 
 /*
     Ex: Dig, Dive, Fly, LeechSeed, bla, bla bla
@@ -66,7 +69,7 @@ int will_cause_flinch(int porcentagem);
 /*
 
 */
-int will_cause_confusion(Pokemon *pokemon);
+int will_cause_confusion(Pokemon *pokemon, int chance);
 
 /*
     (int tipo) -> 1 = atk, 2 = def, 3 = spa, 4 = spd, 5 = spe, 6 = accuracy, 7 = evasion
@@ -79,7 +82,7 @@ void cause_status_multiplier_change(Pokemon pokemon, int tipo, int modificador);
     Não está na forma final, confira: https://www.smogon.com/dex/ss/moves/bind/
 
 */
-void cause_bind(Pokemon adversario);
+void cause_bind(Pokemon *adversario);
 
 
 /*
@@ -90,6 +93,7 @@ void cause_hit_again(int many_times);
 /*
     Ex: Jump Kick
 
+    LEMBRAR QUE SE DÁ FLINCH UMA VEZ, ELE TEM QUE IMPEDIR QUE CAUSE DUAS VEZES
 */
 void cause_crash(Pokemon *pokemon, int porcentagem);
 
@@ -143,5 +147,16 @@ void psywave();
 void superfang();
 void bide();
 void dream_eater();
+void cause_2_5_multihit(Pokemon *ataca, Pokemon *recebe, int indice_move);
+
+
+void apply_burn(Pokemon *pokemon);
+void apply_poison(Pokemon *pokemon);
+void apply_badly_poison(Pokemon *pokemon);
+
+
 
 int is_stab(int tipo1, int tipo2, int tipo_move);
+
+
+#endif

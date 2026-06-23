@@ -5,7 +5,7 @@
 #include "player.h"
 
 // Para inicializar players
-char* inserir_nome(void);           //  nome
+char* inserir_nome();           //  nome
 int* get_tamanho_times(void);       //  tam_time
 Pokemon* criar_time(int tamanho);   //  time[tam_time]
 
@@ -18,7 +18,7 @@ void aviso_de_preguica_do_dev();
 int* captar_stats(int max_por_stat, int max_total);
 void iniciar_batalha(Player player1, Player player2);
 int quem_vence(Pokemon poke1, Pokemon poke2, char *log);
-void gerarTurno(Pokemon *poke1, Pokemon *poke2, int *turno, char *log);
+void gerarTurno(Pokemon *poke1, Pokemon *poke2, int *turno, char *log, char *nome_arquivo);
 void gerar_log_pos_batalha(Player player1, Player player2);
 
 

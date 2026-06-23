@@ -1,8 +1,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <headers/erro.h>
-#include <headers/pokemon.h>
+#include "headers/erro.h"
+#include "headers/pokemon.h"
 
 int* str_stats_to_int_array(char *str){
     
@@ -40,6 +40,7 @@ Pokemon init_pokemon(char *nome, int *evs, int *ivs, char *moves){
     if (types == NULL)
         tipos_exception(nome);
     
+    printf("DEBUG: Tipos carregados para %s: tipo1=%s, tipo2=%s\n", nome, int_type_to_string(types[0]), int_type_to_string(types[1]));
 
     Pokemon pokemon = {
         .nome = nome,
@@ -74,7 +75,11 @@ Pokemon init_pokemon(char *nome, int *evs, int *ivs, char *moves){
         .statusCondition = OK,
         .moveCondition   = malloc(sizeof(MoveCondition)) // automaticamente inicializa com NONE
     };
+    pokemon.moveCondition->condition = NONE;
+    pokemon.moveCondition->turnos = 0;
 
+    validar_pokemon_inicializado(pokemon, pokemon.nome);
+    
     free(bst);
     free(evs);
     free(evs);
@@ -85,7 +90,7 @@ Pokemon init_pokemon(char *nome, int *evs, int *ivs, char *moves){
 }
 
 void show_info(Pokemon pokemon){
-    printf("\n\n=================%s=======================\n", pokemon.nome);
+    printf("\n\n=================[%s](%s/%s)======================\n", pokemon.nome, int_type_to_string(pokemon.types[0]), int_type_to_string(pokemon.types[1]));
     printf("HP: %d/%d\n", pokemon.actual_stats.base_hp, pokemon.base_stats.base_hp);
     printf("Atk: (%d) %d/%d\n", pokemon.multi.m_atk, pokemon.actual_stats.base_atk * calcular_nivel_multiplicador(pokemon.multi.m_atk), pokemon.base_stats.base_atk);
     printf("Def: (%d) %d/%d\n", pokemon.multi.m_def, pokemon.actual_stats.base_def * calcular_nivel_multiplicador(pokemon.multi.m_def), pokemon.base_stats.base_def);
@@ -98,6 +103,12 @@ void show_info(Pokemon pokemon){
     printf("Other Conditions: %s", other_conditions_to_string(pokemon.moveCondition));
     printf("========================== Moves ============================\n");
     for (int i = 0; i < 4; i++){
+        
+        if (pokemon.moves[i].nome == NULL){
+            printf("NULL");
+            continue;
+        }
+            
         printf("%s / %s / %s\n", pokemon.moves[i].nome, int_type_to_string(pokemon.moves[i].type), int_category_to_string(pokemon.moves[i].categoria));
         printf("\t dmg: %d\n", pokemon.moves[i].base_dmg);
         printf("\t acc: %.2f\n", pokemon.moves[i].base_acc * calcular_nivel_multiplicador_accuracy(pokemon.multi.m_acc));
@@ -144,6 +155,7 @@ float calcular_nivel_multiplicador_accuracy(int nivel){
     default: return 3;
     }
 }
+
 float calcular_nivel_multiplicador_evasion(int nivel){
     switch (nivel)
     {
@@ -162,3 +174,4 @@ float calcular_nivel_multiplicador_evasion(int nivel){
     default: return 0.33;
     }
 }
+

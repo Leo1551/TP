@@ -95,21 +95,23 @@ typedef struct {
 
 typedef enum{
     NONE,
-    IN_CHARGE,
-    BLASTED, 
-    FLYING, 
-    DIVE,
-    DIG,
+    IN_CHARGE, // condição pré-ataque
+    BLASTED, // condição pré-ataque
+    FLYING, // condição pré-ataque
+    DIVE, // condição pré-ataque
+    DIG, // condição pré-ataque
     BIND,    //condição pós-turno
-    MIST,
-    BIDE,
-    SEED,
-    CRIT
+    MIST, // condição pré-ataque
+    BIDE, //condição pós-turno
+    SEED, //condição pós-turno
+    CRIT, // condição pré-ataque
+    FLINCH
 }MCondition;
 
 typedef struct{
     MCondition condition;
     unsigned short int turnos;
+    unsigned short int bide_total_dmg; // apagar isso quando tiver uma ideia melhor de como lidar com Bide
 }MoveCondition;
 
 typedef struct{

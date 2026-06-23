@@ -49,6 +49,21 @@ int modificadores(Pokemon *ataca, Pokemon *recebe, int indice);
 */
 int prioridade_por_velocidade(short int a, short int b);
 
+/*
+    
+*/
+int calcula_super_efetividade(short int type_ataca, Pokemon *recebe);
+
+/*
+    Calcula o multiplicador de quão efetivo é o move contra o adversário
+*/
+int super_efetividade_monotype(short int type_ataca, short int type_defende);
+
+/*  
+    Calcula se o movimento acertou
+*/
+int acertou_movimento(Pokemon *ataca, Pokemon *recebe, int indice_move, char *log);
+
 
 
 #endif // UTILIDADES_H
