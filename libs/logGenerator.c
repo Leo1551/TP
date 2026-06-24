@@ -10,7 +10,7 @@
 #include "headers/utilidades.h"
 #include "headers/pokemon.h"
 
-void gerar_log_pre_batalha(Player player1, Player player2){
+char* gerar_log_pre_batalha(Player *player1, Player *player2){
 
     char *novo_arquivo = gerar_arquivo_txt();
 
@@ -21,23 +21,24 @@ void gerar_log_pre_batalha(Player player1, Player player2){
     }
 
     // Exibe e armazena dados do Player 1
-    fprintf(arquivo, "==================== PLAYER 1: %s ====================\n", player1.nome);
-    printf("==================== PLAYER 1: %s ====================\n", player1.nome);
+    fprintf(arquivo, "==================== PLAYER 1: %s ====================\n", player1->nome);
+    printf("==================== PLAYER 1: %s ====================\n", player1->nome);
     
-    for (unsigned int i = 0; i < player1.tam_time; i++)
+    for (unsigned int i = 0; i < player1->tam_time; i++)
         log_exibir_player(arquivo, player1, i);
 
     // Exibe e armazena dados do Player 2
-    fprintf(arquivo, "\n\n==================== PLAYER 2: %s ====================\n", player2.nome);
-    printf("\n\n==================== PLAYER 2: %s ====================\n", player2.nome);
+    fprintf(arquivo, "\n\n==================== PLAYER 2: %s ====================\n", player2->nome);
+    printf("\n\n==================== PLAYER 2: %s ====================\n", player2->nome);
     
-    for (unsigned int i = 0; i < player2.tam_time; i++)
+    for (unsigned int i = 0; i < player2->tam_time; i++)
         log_exibir_player(arquivo, player2, i);
 
     fprintf(arquivo, "\n========================================================\n");
     printf("\n========================================================\n");
     
     fclose(arquivo);
+    return novo_arquivo;
 
 }
 
@@ -92,9 +93,9 @@ char* gerar_id_batalha(){
     return id;
 }
 
-void log_exibir_player(FILE *arquivo, Player player, int i){
+void log_exibir_player(FILE *arquivo, Player *player, int i){
 
-    Pokemon poke = player.time[i];
+    Pokemon poke = player->time[i];
         
         show_info(poke);
 
@@ -147,20 +148,20 @@ void log_exibir_player(FILE *arquivo, Player player, int i){
 
 }
 
-void gerar_log_turno(char *acoes, char *arq){
-    FILE *arq = fopen(arq, "a");
+void gerar_log_turno(char *acoes, char *farq){
+    FILE *arq = fopen(farq, "a");
 
     fprintf(arq, acoes);
 }
 
-void gerar_log_vencedor_batalha(Player *player, char *arq, int num_player){
+void gerar_log_vencedor_batalha(Player *player, char *farq, int num_player){
 
-    FILE *arq = fopen(arq, "a");
+    FILE *arq = fopen(farq, "a");
 
     fprintf(arq, "===========================\n\nO VENCEDOR É O PLAYER %d!!\n\n", num_player);
 
     for (int i = 0; i < player->tam_time; i++)
-        log_exibir_player(fopen(arq, "a"), *player, i);
+        log_exibir_player(arq, player, i);
     
 
 }

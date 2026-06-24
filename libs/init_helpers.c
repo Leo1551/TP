@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "headers/pokemon.h"
-#include "utilidades.h"
+#include "headers/utilidades.h"
 
 char* init_bst(char *nome){
 

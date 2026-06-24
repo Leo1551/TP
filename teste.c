@@ -2,10 +2,9 @@
 
 int main(){
 
-    unsigned int a = 1;
+    int *p = NULL;
 
-    a -= 2;
+    printf("%d", *p);
 
-    printf("%u\n", a);
     return 0;
 }

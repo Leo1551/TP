@@ -9,4 +9,5 @@ int* init_monotype(const char *tipo);
 int* init_dualtype(const char *tipo1, const char *tipo2);
 int* init_stats(int max_por_stat, int max_total);
 
+void substituir_espaco_por_underline(char *str);
 #endif

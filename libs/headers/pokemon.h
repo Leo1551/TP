@@ -42,13 +42,13 @@ typedef struct{
 
 
 typedef struct{
-    float m_atk;
-    float m_def;
-    float m_spa;
-    float m_spd;
-    float m_spe;
-    float m_acc;
-    float m_evasion;
+    int m_atk;
+    int m_def;
+    int m_spa;
+    int m_spd;
+    int m_spe;
+    int m_acc;
+    int m_evasion;
 }PokemonMultiplicadores; // 6 campos, todos devem variar de [-6 6]
 
 typedef enum{
@@ -83,15 +83,13 @@ typedef enum{
     POISON = 4,         // hp -= (max_hp * 7/8) 
     BADLY_POISON = 5,   // hp -= (max_hp * 1/16 * (qtd_turnos)) 
     SLEEP = 6,          //
-    RESTING = 7,
-    CONFUSED = 8, 
+    RESTING = 7
 }SCondition;
 
 typedef struct {
     SCondition condition;
     unsigned short int turnos;
 }StatusCondition;
-
 
 typedef enum{
     NONE,
@@ -122,10 +120,12 @@ typedef struct{
     StatusCondition statusCondition;
     Move moves[4];
     MoveCondition *moveCondition;
+    short int tam_move_conditions;
     short int types[2];
+    short int gambiarra_confusion;
 }Pokemon;
 
-Pokemon init_pokemon(char *nome, char *evs, char *ivs, char *moves);
+Pokemon init_pokemon(char *nome, int *evs, int *ivs, char *moves);
 int* str_stats_to_int_array(char *str);
 void show_info(Pokemon pokemon);
 
@@ -136,4 +136,14 @@ float calcular_nivel_multiplicador(int nivel);
 float calcular_nivel_multiplicador_accuracy(int nivel);
 float calcular_nivel_multiplicador_evasion(int nivel);
 
+
+char* init_bst(char *nome);
+Move* init_moves(char *moves);
+int*  init_types(char *nome);
+char* int_type_to_string(int type);
+int   calc_hp(int base, int ev, int iv);
+int   calc_bst(int base, int ev, int iv);
+char* show_status_condition(int condition);
+char* other_conditions_to_string(MoveCondition *moveCondition);
+char* int_category_to_string(int categoria);
 #endif // POKEMON_H

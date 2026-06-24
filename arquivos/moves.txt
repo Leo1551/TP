@@ -26,7 +26,7 @@ Guillotine          1        1 0            30        OHKO                      
 
 Razor_Wind          1        2 80           100       Charge(1)->high_crit                     1
 
-Swords_Dance        1        3 0            999       Buff(Atk,+2,100)                         0
+Swords_Dance        1        3 0            999       Buff(1,+2,100)                         0
 
 Cut                 1        1 50           95        None                                     1
 
@@ -70,11 +70,11 @@ Wrap                1        1 15           90        Bind(2-5)                 
 
 Take_Down           1        1 90           85        Recoil(25)                               1
 
-Thrash              1        1 120          100       Consecutive->confuse(100)                1
+Thrash              1        1 120          100       Consecutive->Confuse(100)                1
 
 Double_Edge         1        1 120          100       Recoil(33)                               1
 
-Tail_Whip           1        3 0            100       Buff(Def,-1,100)                         1
+Tail_Whip           1        3 0            100       Buff(2,-1,100)                         1
 
 Poison_Sting        8        1 15           100       Poison(20)                               1
 
@@ -82,21 +82,21 @@ Twineedle          13        1 25           100       Hit(2)->Poison(20)        
 
 Pin_Missile        13        1 25           95        MultiHit(2-5)                            1
 
-Leer                1        3 0            100       Buff(Def,-1,100)                         1
+Leer                1        3 0            100       Buff(2,-1,100)                         1
 
 Bite               17        1 60           100       Flinch(30)                               1
 
-Growl               1        3 0            100       Buff(Atk,-1,100)                         1
+Growl               1        3 0            100       Buff(1,-1,100)                         1
 
 Sing                1        3 0            55        Sleep(100)                               1
 
-Supersonic          1        3 0            55        Confusion(100)                           1
+Supersonic          1        3 0            55        Confuse(100)                           1
 
 Sonic_Boom          1        2 0            90        FixedDamage(20)                          1
 
 Disable             1        3 0            100       Disable(4)                               1
 
-Acid                8        2 40           100       Buff(SpD,-1,10)                          1
+Acid                8        2 40           100       Buff(4,-1,10)                          1
 
 Ember               2        2 40           100       Burn(10)                                 1
 
@@ -116,9 +116,9 @@ Blizzard            6        2 110          70        Freeze(30)                
 
 Psybeam            12        2 65           100       Confuse(10)                              1
 
-Bubble_Beam         3        2 65           100       Buff(Spe,-1,10)                          1
+Bubble_Beam         3        2 65           100       Buff(5,-1,10)                          1
 
-Aurora_Beam         6        2 65           100       Buff(Atk,-1,10)                          1
+Aurora_Beam         6        2 65           100       Buff(1,-1,10)                          1
 
 Hyper_Beam          1        2 150          90        Blasted                                  1
 
@@ -138,7 +138,7 @@ Mega_Drain          4        2 40           100       Drain(50)                 
 
 Leech_Seed          4        3 0            90        Seed                                     1
 
-Growth              1        3 0            999       Buff(Atk,+1,100)->Buff(SpA,+1,100)       0
+Growth              1        3 0            999       Buff(1,+1,100)->Buff(3,+1,100)           0
 
 Razor_Leaf          4        1 55           95        high_crit                                1
 
@@ -150,9 +150,9 @@ Stun_Spore          4        3 0            75        Paralyze(100)             
 
 Sleep_Powder        4        3 0            75        Sleep(100)                               1
 
-Petal_Dance         4        2 120          100       Consecutive->Confusion(100)              1
+Petal_Dance         4        2 120          100       Consecutive->Confuse(100)              1
 
-String_Shot        13        3 0            95        Buff(Spe,-2,100)                         1
+String_Shot        13        3 0            95        Buff(5,-2,100)                         1
 
 Dragon_Rage        16        2 0            100       FixedDamage(40)                          1
 
@@ -174,17 +174,17 @@ Fissure             9        1              30        OHKO                      
 
 Dig                 9        1 80           100       cause_dig                                1
 
-Toxic               8        3 0            90        BadlyPoison(100)                         1
+Toxic               8        3 0            90        BadlyPoison                              1
 
 Confusion          12        2 50           100       Confuse(10)                              1
 
-Psychic            12        2 90           100       Buff(SpD,-1,10)                          1
+Psychic            12        2 90           100       Buff(4,-1,10)                          1
 
 Hypnosis           12        3 0            60        Sleep(100)                               1
 
-Meditate           12        3 0            999       Buff(Atk,+1,100)                         0
+Meditate           12        3 0            999       Buff(1,+1,100)                         0
 
-Agility            12        3 0            999       Buff(Spe,+2,100)                         0
+Agility            12        3 0            999       Buff(5,+2,100)                         0
 
 Quick_Attack        1        1 40           100       None                                     1
 
@@ -194,25 +194,25 @@ Night_Shade        15        2              100       FixedDamage(100)          
 
 Mimic               1        3 0            999       Mimic                                    1
 
-Screech             1        3 0            85        Buff(Def,-2,100)                         1
+Screech             1        3 0            85        Buff(2,-2,100)                         1
 
-Double_Team         1        3 0            999       Buff(Eva,+1,100)                         0
+Double_Team         1        3 0            999       Buff(7,+1,100)                         0
 
 Recover             1        3 0            999       Recover(50)                              0
 
-Harden              1        3 0            999       Buff(Def,+1,100)                         0
+Harden              1        3 0            999       Buff(2,+1,100)                         0
 
-Minimize            1        3 0            999       Buff(Eva,+2,100)                         0
+Minimize            1        3 0            999       Buff(7,+2,100)                         0
 
 Smokescreen         1        3 0            100       Buff(Acc,-1,100)                         1
 
-Confuse_Ray        15        3 0            100       Confusion(100)                           1
+Confuse_Ray        15        3 0            100       Confuse(100)                           1
 
-Withdraw            3        3 0            999       Buff(Def,+1,100)                         0
+Withdraw            3        3 0            999       Buff(2,+1,100)                         0
 
-Defense_Curl        1        3 0            999       Buff(Def,+1,100)                         0
+Defense_Curl        1        3 0            999       Buff(2,+1,100)                         0
 
-Barrier            12        3 0            999       Buff(Def,+2,100)                         0
+Barrier            12        3 0            999       Buff(2,+2,100)                         0
 
 Haze                6        3 0            999       Reset_multipliers                        0
 
@@ -240,13 +240,13 @@ Clamp               3        1 35           85        Bind(2-5)                 
 
 Swift               1        2 60           999       None                                     1
 
-Skull_Bash          1        1 130          100       Charge->Buff(Def,+1,100)->Finish         1
+Skull_Bash          1        1 130          100       Charge->Buff(2,+1,100)->Finish         1
 
 Spike_Cannon        1        1 20           100       MultiHit(2-5)                            1
 
-Constrict           1        1 10           100       Buff(Spe,-1,10)                          1
+Constrict           1        1 10           100       Buff(5,-1,10)                          1
 
-Amnesia            12        3 0            999       Buff(SpD,+2,100)                         0
+Amnesia            12        3 0            999       Buff(4,+2,100)                         0
 
 Kinesis            12        3 0            80        Buff(Acc,-1,100)                         1
 
@@ -268,7 +268,7 @@ Lovely_Kiss         1        3 0            999       Sleep(100)                
 
 Sky_Attack         11        1 140          90        Charge->flinch(30)                       1
 
-Bubble              3        2 40           100       Buff(Spe,-1,10)                          1
+Bubble              3        2 40           100       Buff(5,-1,10)                          1
 
 Dizzy_Punch         1        1 70           100       Confuse(10)                              1
 
@@ -280,7 +280,7 @@ Psywave            12        2              100       Psywave                   
 
 Splash              1        3 0            999       None                                     1
 
-Acid_Armor          8        3 0            999       Buff(Def,+2,100)                         0
+Acid_Armor          8        3 0            999       Buff(2,+2,100)                         0
 
 Crabhammer          3        1 100          90        high_crit                                1
 
@@ -296,7 +296,7 @@ Rock_Slide         10        1 75           90        Flinch(30)                
 
 Hyper_Fang          1        1 80           90        Flinch(10)                               1
 
-Sharpen             1        3 0            999       Buff(Atk,+1,100)                         0
+Sharpen             1        3 0            999       Buff(1,+1,100)                         0
 
 Tri_Attack          1        2 80           100       Paralyze(20)->Freeze(20)->Burn(20)       1
 

@@ -9,7 +9,7 @@
     Criará um arquivo único battle_log_<idbatalha>.txt
         - Guardará todos os pokes do p1, p2
 */
-void gerar_log_pre_batalha(Player player1, Player player2);
+char* gerar_log_pre_batalha(Player *player1, Player *player2);
 
 
 /*
@@ -27,7 +27,7 @@ char* gerar_arquivo_txt();
     Receberá uma string formatada com o que será exibido no terminal
     e guardará no arquivo battle-log-<idbatalha>.txt
 */
-void gerar_log_turno(char *acoes, char *arq);
+void gerar_log_turno(char *acoes, char *farq);
 
 
 
@@ -36,8 +36,7 @@ void gerar_log_turno(char *acoes, char *arq);
         - Nome do vencedor 
         - Todos os Pokémon
 */
-void gerar_log_vencedor_batalha(Player player1, char *arq);
-
+void gerar_log_vencedor_batalha(Player *player, char *arq, int num_player);
 /*
 
 */

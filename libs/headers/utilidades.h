@@ -1,4 +1,5 @@
 #include "pokemon.h"
+#include <stdio.h>
 #ifndef UTILIDADES_H
 #define UTILIDADES_H
 
@@ -6,9 +7,12 @@
 void limpar_buffer_de_teclado(void);
 void capitalizarPalavras(char *str);
 void trocar_quebra_de_linha_por_terminador(char *str);
-FILE* achar_string_em_arquivo(char *nome, char *filename);
+FILE* achar_string_em_arquivo(const char *nome, char *filename);
 int calc_bst(int bst, int ev, int iv);
 int calc_hp(int bst, int ev, int iv);
+
+// Conversões e cálculos (definidas em utilidades.c)
+char* int_type_to_string(int type);
 
 
 // para pokemon.c -> show_stats
@@ -27,8 +31,8 @@ int search_indice_move(Move *moves, char *move);
 void move_calc(Pokemon *ataca, Pokemon *recebe, int indice_move, char *log);
 /*
     Calcula o dano de moves PHYSICAL/SPECIAL
-*/
-void dmg_calc(Pokemon *ataca_primeiro, Pokemon *outro, int indice, char *log);
+*/            
+void dmg_calc(Pokemon *ataca, Pokemon *recebe, int indice, char *log, int *dano_total);
 /*
     Realiza todos os efeitos de moves
     será a última parte a ser desenvolvida.
@@ -65,5 +69,13 @@ int super_efetividade_monotype(short int type_ataca, short int type_defende);
 int acertou_movimento(Pokemon *ataca, Pokemon *recebe, int indice_move, char *log);
 
 
+//faz o calculo sem modificadores do dano final total dado
+int calc_dano_final(int dano_bruto, int stat_ofensivo, int stat_defensivo);
+
+//retira as condições de moves
+void retirar_move_condition(Pokemon *poke, MCondition condition, int i);
+
+//verifica se é possível atacar pokemon adversário
+int consegue_atacar(Pokemon *ataca, char *log);
 
 #endif // UTILIDADES_H

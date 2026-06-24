@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "headers/erro.h"
 #include "headers/pokemon.h"
+#include "headers/utilidades.h"
 
 int* str_stats_to_int_array(char *str){
     
@@ -72,6 +73,8 @@ Pokemon init_pokemon(char *nome, int *evs, int *ivs, char *moves){
                             types ? types[1] : 1
                             },
         .multi           = {1, 1, 1, 1, 1, 1},
+        .gambiarra_confusion = 0,
+        .tam_move_conditions = 1,
         .statusCondition = OK,
         .moveCondition   = malloc(sizeof(MoveCondition)) // automaticamente inicializa com NONE
     };

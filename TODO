@@ -4,58 +4,24 @@ FALTANDO PARA BATALHA FUNCIONAL COM LOG PÓS-BATALHA
 
 1. SISTEMA DE EFEITOS DE MOVES
 ════════════════════════════════════════════════════════════
-  utilidades.c:
-    - Implementar effect_calc() - parseia e aplica efeitos do move
-      * Efeitos a implementar: Burn, Freeze, Paralyze, Poison, BadlyPoison
-      * Status effects com chance base
-      * Recoil damage
-      * Multi-hit moves (Double Slap, Comet Punch, etc)
-      * Buff/Debuff moves (Swords Dance, Growl, etc)
-      * Move conditions (Charge moves como Razor Wind, Dig, Fly, etc)
-      * OHKO moves (Guillotine)
-
   moves.c:
-    - Implementar cause_move_effect() - função raiz para efeitos
-    - Implementar cause_status_condition() - aplica status conditions
-      * Considerar chance_base_acerto
-      * Validar imunidades de tipo (ex: Fire type imune a Burn)
-    - Implementar cause_move_condition() - aplica move conditions (IN_CHARGE, FLYING, DIG, etc)
-    - Implementar cause_recoil_dmg() - aplica dano de recoil (Return, Double-Edge, etc)
-    - Implementar quantidade_hits_acertados() - sistema Gen VI de multi-hit
     - Implementar will_cause_critical() - verifica se vai ser critical hit
 
 2. SISTEMA DE CONDIÇÕES PÓS-TURNO
 ════════════════════════════════════════════════════════════
-  dialogos.c:
-    - Implementar gerar_condicoes_pos_turno() - processa condições ao final do turno
-      * Dano de Burn (reduz ATK, tira 1/8 do HP)
-      * Dano de Poison (1/8 do HP)
-      * Dano de Badly Poisoned (1/16 * turno do HP)
-    - Implementar coisas_pre_ataque() - processa condições antes de acertar
-      * Chance 20% FREEZE desaparece
-      * Chance 25% PARALYZE desaparece
-      * Chance 25% SLEEP desaparece
-      * CONFUSION: chance 33% de acertar a si mesmo com 50% do dano do move
     -Implementar condição de turno do ataque
-      * Recoil damage pós-turno (se aplicável)
       * Decrementar turno de condições
 
 3. SISTEMA DE SELEÇÃO E EXECUÇÃO DE MOVES
 ════════════════════════════════════════════════════════════
   dialogos.c:
-    - Implementar search_indice_move() - busca move por nome
     - Implementar prioridade_por_velocidade() - determina quem ataca primeiro -> FAÇA DEPOIS!!!
       * Considerar priority diferente de moves especiais (ex: Quick Attack tem priority +1)
 
 
 6. INTEGRAÇÃO E CORREÇÕES
 ════════════════════════════════════════════════════════════
-  dialogos.c:
-    - Implementar gerar_condicoes_pos_turno() - retorna string com condições aplicadas
 
-  pokemon.c: (deve ser analisado por alguém que saiba as fórmulas)
-    - Validar cálculo de Stats: formula gen VI = (2*BS + IV + EV/4) * N/100 + N + 5
-    - HP precisa de fórmula diferente: (2*BS + IV + EV/4 + 100) * N/100 + 10
 
 
 8. MELHORIAS FUTURAS (DEPOIS DA BATALHA FUNCIONAR)
