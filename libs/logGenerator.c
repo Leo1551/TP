@@ -17,7 +17,7 @@ char* gerar_log_pre_batalha(Player *player1, Player *player2){
     FILE *arquivo = fopen(novo_arquivo, "w");
     if (!arquivo) {
         printf("\n\n\nErro ao abrir arquivo de log!\n\n\n");
-        return;
+        return "";
     }
 
     // Exibe e armazena dados do Player 1

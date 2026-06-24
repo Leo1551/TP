@@ -26,22 +26,36 @@ char* show_status_condition(SCondition condition){
     }
 }
 
-char* int_type_to_string(int type){
-    char *tipo_convertido = malloc(sizeof(char) * 3);
+char *int_type_to_string(int type)
+{
+    char *tipo_convertido = malloc(sizeof(char) * 12);
     char *tipo_search = malloc(sizeof(char) * 20);
-    sprintf(tipo_convertido, "%s", type);
+
+    if (tipo_convertido == NULL || tipo_search == NULL)
+    {
+        free(tipo_convertido);
+        free(tipo_search);
+        return NULL;
+    }
+
+    snprintf(tipo_convertido, 12, "%d", type);
+
     FILE *arq = achar_string_em_arquivo(tipo_convertido, "arquivos/types.txt");
 
-    fscanf(arq, "%2s", tipo_search);
-    
     free(tipo_convertido);
+
+    if (arq == NULL)
+    {
+        free(tipo_search);
+        return NULL;
+    }
+
+    fscanf(arq, "%19s", tipo_search);
+
     fclose(arq);
 
-
     return tipo_search;
-
 }
-
 char* int_category_to_string(int categoria){
     switch (categoria)
     {
@@ -119,30 +133,30 @@ int search_indice_move(Move *moves, char *move){
     return indice;
 }
 
-char* other_conditions_to_string(MCondition *conditions){
-    int tam = sizeof(conditions)/sizeof(MoveCondition);
-    char buffer = malloc(sizeof(char) * 100);
+char* other_conditions_to_string(MoveCondition *conditions, int tam){
+    
+    char *buffer = malloc(sizeof(char) * 100);
 
     for (int i = 0; i < tam; i++){
-        if (conditions[i] == NONE)
+        if (conditions[i].condition == NONE)
             return "None";
-        else if (conditions[i] == IN_CHARGE)
+        else if (conditions[i].condition == IN_CHARGE)
             strcat(buffer, "Carregando move");
-        else if(conditions[i] == BLASTED)
+        else if(conditions[i].condition == BLASTED)
             strcat(buffer, "Recarregando energias");
-        else if(conditions[i] == FLYING)
+        else if(conditions[i].condition == FLYING)
             strcat(buffer, "Durante Fly");
-        else if(conditions[i] == DIVE)
+        else if(conditions[i].condition == DIVE)
             strcat(buffer, "Usando Dive");
-        else if(conditions[i] == DIG)
+        else if(conditions[i].condition == DIG)
             strcat(buffer, "Usando Dig");
-        else if(conditions[i] == BIND)
+        else if(conditions[i].condition == BIND)
             strcat(buffer, "Sob efeito de Bind");
-        else if(conditions[i] == MIST)
+        else if(conditions[i].condition == MIST)
             strcat(buffer, "Sob efeito de Mist");
-        else if(conditions[i] == BIDE)
+        else if(conditions[i].condition == BIDE)
             strcat(buffer, "Carregando Bide");
-        else if(conditions[i] == SEED)
+        else if(conditions[i].condition == SEED)
             strcat(buffer, "Sob efeito de Leech Seed");
 
         strcat(buffer, " ");
@@ -169,7 +183,7 @@ void move_calc(Pokemon *ataca, Pokemon *recebe, int indice_move, char *log){
     if (recebe->actual_stats.base_hp > 0)
         cause_move_effect(ataca, recebe, log, indice_move, dano_bruto);
 
-    free(dano_bruto);
+    
 }
 
 int acertou_movimento(Pokemon *ataca, Pokemon *recebe, int indice_move, char *log){
@@ -207,7 +221,7 @@ int acertou_movimento(Pokemon *ataca, Pokemon *recebe, int indice_move, char *lo
             ataca->actual_stats.base_hp = 0;
         }
 
-        int porcentagem_perdida = ataca->actual_stats.base_hp / ataca->base_stats.base_hp/2;
+        double porcentagem_perdida = ataca->actual_stats.base_hp / ataca->base_stats.base_hp/2;
         sprintf(log, "%s errou o movimento e recebeu perdeu %.2f%% (%d/%d) de HP!\n\n", ataca->nome, porcentagem_perdida, ataca->base_stats.base_hp/2, ataca->base_stats.base_hp);
 
         ataca->actual_stats.base_hp -= ataca->base_stats.base_hp/2;
@@ -297,7 +311,7 @@ int modificadores(Pokemon *ataca, Pokemon *recebe, int indice){
     }
 
     //Critical hit
-    if (will_cause_critical(ataca->moveCondition, ataca->moves[indice].funcao_move))
+    if (will_cause_critical(ataca->moveCondition, ataca->moves[indice].funcao_move, ataca->tam_move_conditions))
         multiplicador *= 1.5;
     
     multiplicador *= calcula_super_efetividade(ataca->moves[indice].type, recebe);
@@ -463,7 +477,7 @@ int consegue_atacar(Pokemon *ataca, char *log){
     return 1;
 }
 
-int acerta(int chance_base_acerto){
+int acerta(double chance_base_acerto){
     return ((double) rand()/RAND_MAX < chance_base_acerto/100) ? 1 : 0;
 }
 

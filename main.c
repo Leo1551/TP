@@ -30,7 +30,7 @@ int main(){
         return 1;
     }
     
-    iniciar_batalha(players[0], players[1]);
+    iniciar_batalha(&players[0], &players[1]);
     
     free(tamanho);
     return 0;

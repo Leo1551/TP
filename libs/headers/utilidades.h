@@ -19,8 +19,7 @@ char* int_type_to_string(int type);
 char* show_status_condition(SCondition condition);
 char* int_type_to_string(int type);
 char* int_category_to_string(int categoria);
-char* other_conditions_to_string(MCondition *conditions);
-
+char* other_conditions_to_string(MoveCondition *conditions, int tam);
 // para dialogos.c -> iniciar_batalha
 int search_indice_move(Move *moves, char *move);
 

@@ -40,7 +40,7 @@ void gerar_log_vencedor_batalha(Player *player, char *arq, int num_player);
 /*
 
 */
-void log_exibir_player(FILE *arquivo, Player player, int i);
+void log_exibir_player(FILE *arquivo, Player *player, int i);
 
 
 #endif

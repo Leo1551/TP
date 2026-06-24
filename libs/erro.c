@@ -1,4 +1,5 @@
 #include "headers/erro.h"
+#include "headers/utilidades.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -17,7 +18,7 @@ void arquivo_nao_encontrado_exception(char *filename){
     printf("Verifique se o arquivo existe no diretório 'arquivos/'\n\n");
 }
 
-void string_nao_encontrada_exception(char *nome, char *filename){
+void string_nao_encontrada_exception(const char *nome, char *filename){
     printf("\n\n ERRO: A string \"%s\" não foi encontrada no arquivo: %s\n\n", nome, filename);
 }
 
@@ -83,20 +84,20 @@ int validar_nome_pokemon(char *nome) {
 
 
 
-int validar_pokemon_inicializado(Pokemon pokemon, char *nome) {
-    if (pokemon.nome == NULL) {
+int validar_pokemon_inicializado(Pokemon *pokemon, char *nome) {
+    if (pokemon->nome == NULL) {
         printf("\n\n ERRO ao inicializar Pokémon '%s'\n", nome);
         printf("A estrutura do Pokémon não foi preenchida corretamente\n\n");
         return 0;
     }
     
-    if (pokemon.base_stats.base_hp == 0) {
+    if (pokemon->base_stats.base_hp == 0) {
         printf("\n\n ERRO: Pokémon '%s' tem HP base = 0\n", nome);
         printf("Verifique se o Pokémon existe no arquivo pokemons.txt\n\n");
         return 0;
     }
     
-    if (pokemon.types[0] == 0 && pokemon.types[1] == 0) {
+    if (pokemon->types[0] == 0 && pokemon->types[1] == 0) {
         printf("\n\nERRO: Pokémon '%s' não tem tipos atribuídos\n", nome);
         printf("Verifique se os tipos foram carregados corretamente\n\n");
         return 0;
@@ -104,7 +105,7 @@ int validar_pokemon_inicializado(Pokemon pokemon, char *nome) {
     
     int move_count = 0;
     for (int i = 0; i < 4; i++) {
-        if (pokemon.moves[i].nome != NULL && strlen(pokemon.moves[i].nome) > 0) {
+        if (pokemon->moves[i].nome != NULL && strlen(pokemon->moves[i].nome) > 0) {
             move_count++;
         }
     }
@@ -174,6 +175,6 @@ int validar_players_inicializados(Player player1, Player player2) {
 void validar_malloc(void *ptr, char *contexto) {
     if (ptr == NULL) {
         int burrice_do_programador = null_pointer_exception();
-        printf("Contexto: %s\n", contexto);
+        printf("Contexto: %s (%d)\n", contexto, burrice_do_programador);
     }
 }

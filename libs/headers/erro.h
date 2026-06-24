@@ -9,7 +9,7 @@
    ====================================== */
 void nome_pokemon_exception(char *nome);
 void arquivo_nao_encontrado_exception(char *filename);
-void string_nao_encontrada_exception(char *nome, char *filename);
+void string_nao_encontrada_exception(const char *nome, char *filename);
 void move_nao_encontrado_exception(char *move, char *filename);
 void tipos_exception(char *nome);
 
@@ -29,7 +29,7 @@ int validar_ivs(int *ivs);
 /* ======================================
    VALIDAÇÕES DE INICIALIZAÇÃO
    ====================================== */
-int validar_pokemon_inicializado(Pokemon pokemon, char *nome);
+int validar_pokemon_inicializado(Pokemon *pokemon, char *nome);
 int validar_time_inicializado(Pokemon *time, int tamanho, int player_num);
 int validar_players_inicializados(Player player1, Player player2);
 int validar_arquivos_necessarios(void);

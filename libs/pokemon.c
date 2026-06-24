@@ -26,12 +26,12 @@ int* str_stats_to_int_array(char *str){
     return valores;
 }
 
-Pokemon init_pokemon(char *nome, int *evs, int *ivs, char *moves){
+Pokemon *init_pokemon(char *nome, int *evs, int *ivs, char *moves){
     
     int *bst = str_stats_to_int_array(init_bst(nome));
     if (bst == NULL){
         nome_pokemon_exception(nome);
-        return (Pokemon){.nome = NULL};
+        return &(Pokemon){NULL};
     }
         
 
@@ -43,7 +43,9 @@ Pokemon init_pokemon(char *nome, int *evs, int *ivs, char *moves){
     
     printf("DEBUG: Tipos carregados para %s: tipo1=%s, tipo2=%s\n", nome, int_type_to_string(types[0]), int_type_to_string(types[1]));
 
-    Pokemon pokemon = {
+    Pokemon *pokemon = malloc(sizeof(Pokemon));    
+
+    *pokemon = (Pokemon){
         .nome = nome,
         .base_stats      = { //esses serão constantes
                                 calc_hp (bst[0], evs[0], evs[0]), // hp
@@ -75,16 +77,16 @@ Pokemon init_pokemon(char *nome, int *evs, int *ivs, char *moves){
         .multi           = {1, 1, 1, 1, 1, 1},
         .gambiarra_confusion = 0,
         .tam_move_conditions = 1,
-        .statusCondition = OK,
+        .statusCondition = (StatusCondition){.condition = OK,.turnos = 0},
         .moveCondition   = malloc(sizeof(MoveCondition)) // automaticamente inicializa com NONE
     };
-    pokemon.moveCondition->condition = NONE;
-    pokemon.moveCondition->turnos = 0;
+    pokemon->moveCondition[0].condition = NONE;
+    pokemon->moveCondition[0].turnos = 0;
 
-    validar_pokemon_inicializado(pokemon, pokemon.nome);
-    
+    validar_pokemon_inicializado(pokemon, pokemon->nome);
+
     free(bst);
-    free(evs);
+    free(ivs);
     free(evs);
     free(move);
     free(types);
@@ -95,15 +97,15 @@ Pokemon init_pokemon(char *nome, int *evs, int *ivs, char *moves){
 void show_info(Pokemon pokemon){
     printf("\n\n=================[%s](%s/%s)======================\n", pokemon.nome, int_type_to_string(pokemon.types[0]), int_type_to_string(pokemon.types[1]));
     printf("HP: %d/%d\n", pokemon.actual_stats.base_hp, pokemon.base_stats.base_hp);
-    printf("Atk: (%d) %d/%d\n", pokemon.multi.m_atk, pokemon.actual_stats.base_atk * calcular_nivel_multiplicador(pokemon.multi.m_atk), pokemon.base_stats.base_atk);
-    printf("Def: (%d) %d/%d\n", pokemon.multi.m_def, pokemon.actual_stats.base_def * calcular_nivel_multiplicador(pokemon.multi.m_def), pokemon.base_stats.base_def);
-    printf("SpA: (%d) %d/%d\n", pokemon.multi.m_spa, pokemon.actual_stats.base_spa * calcular_nivel_multiplicador(pokemon.multi.m_spa), pokemon.base_stats.base_spa);
-    printf("SpD: (%d) %d/%d\n", pokemon.multi.m_spd, pokemon.actual_stats.base_spd * calcular_nivel_multiplicador(pokemon.multi.m_spd), pokemon.base_stats.base_spd);
-    printf("Spe: (%d) %d/%d\n", pokemon.multi.m_spe, pokemon.actual_stats.base_spe * calcular_nivel_multiplicador(pokemon.multi.m_spe), pokemon.base_stats.base_spe);
+    printf("Atk: (%d) %d/%d\n", pokemon.multi.m_atk, (int) (pokemon.actual_stats.base_atk * calcular_nivel_multiplicador(pokemon.multi.m_atk)), pokemon.base_stats.base_atk);
+    printf("Def: (%d) %d/%d\n", pokemon.multi.m_def, (int)(pokemon.actual_stats.base_def * calcular_nivel_multiplicador(pokemon.multi.m_def)), pokemon.base_stats.base_def);
+    printf("SpA: (%d) %d/%d\n", pokemon.multi.m_spa, (int)(pokemon.actual_stats.base_spa * calcular_nivel_multiplicador(pokemon.multi.m_spa)), pokemon.base_stats.base_spa);
+    printf("SpD: (%d) %d/%d\n", pokemon.multi.m_spd, (int)(pokemon.actual_stats.base_spd * calcular_nivel_multiplicador(pokemon.multi.m_spd)), pokemon.base_stats.base_spd);
+    printf("Spe: (%d) %d/%d\n", pokemon.multi.m_spe, (int)(pokemon.actual_stats.base_spe * calcular_nivel_multiplicador(pokemon.multi.m_spe)), pokemon.base_stats.base_spe);
     printf("Accuracy: %.2f Evasion: %.2f\n", calcular_nivel_multiplicador_accuracy(pokemon.multi.m_acc), calcular_nivel_multiplicador_evasion(pokemon.multi.m_evasion));
     printf("=============================================================\n");
     printf("Status Condition: %s (Turnos: %d)\n", show_status_condition(pokemon.statusCondition.condition), pokemon.statusCondition.turnos);
-    printf("Other Conditions: %s", other_conditions_to_string(pokemon.moveCondition));
+    printf("Other Conditions: %s", other_conditions_to_string(pokemon.moveCondition, pokemon.tam_move_conditions));
     printf("========================== Moves ============================\n");
     for (int i = 0; i < 4; i++){
         

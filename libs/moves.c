@@ -91,7 +91,7 @@ void cause_move_effect(Pokemon *ataca, Pokemon *recebe, char *log, int indice_mo
 
             // -1 pois o primeiro hit já foi
             for (int i = 0; i < qtd_hits -1; i++)
-                dmg_calc(ataca, recebe, indice_move, log, dano_bruto);
+                dmg_calc(ataca, recebe, indice_move, log, &dano_bruto);
             
         }
         else if(strstr(ptr, "Disable")){
@@ -380,4 +380,28 @@ void superfang(Pokemon *recebe){
 void bide(Pokemon *pokemon){
     // Bide armazena dano e devolve em dobro no próximo turno
     add_move_condition(pokemon, (MoveCondition){BIDE, 2});
+}
+
+int will_cause_critical(MoveCondition *conditions, char *effect, int qtd){
+    int nivel_crit = 0;
+
+    for (int i = 0; i < qtd; i++)
+        if (conditions[i].condition == CRIT)
+        {
+            nivel_crit = 1;
+            break;
+        }
+        
+    if (strstr(effect, "high_crit"))
+        nivel_crit++;
+    
+    switch (nivel_crit)
+    {
+    case 0: return acerta(6.25);
+    case 1: return acerta(12.5);
+    case 2: return acerta(50);
+    default:
+        printf("\n\n\n\nERRO ESTRANHO EM will_cause_crit\n\n\n\n");
+    }
+    return 0;
 }

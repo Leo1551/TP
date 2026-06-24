@@ -7,7 +7,8 @@
 #include "headers/init_helpers.h"
 #include "headers/erro.h"
 #include "headers/logGenerator.h"
-
+#include "headers/dialogos.h"
+#include "headers/moves.h"
 int* get_tamanho_times(){
     int *qtd = malloc(2 * sizeof(int));
     validar_malloc(qtd, "get_tamanho_times: alocação de qtd");
@@ -78,10 +79,13 @@ Pokemon* criar_time(int tamanho){
             capitalizarPalavras(nome_buf);
             capitalizarPalavras(moves_buf);
 
-        time[i] = init_pokemon(nome_buf, evs_buf, ivs_buf, moves_buf);    
+        Pokemon *poke = init_pokemon(nome_buf, evs_buf, ivs_buf, moves_buf);    
+
+        time[i] = *poke;
+        free(poke);
 
         if (time[i].nome == NULL){
-            erro_ao_inicializar_pokemon(nome_buf, evs_buf, ivs_buf, moves_buf);
+            erro_ao_inicializar_pokemon(nome_buf);
             i--;
         }
         
@@ -89,9 +93,9 @@ Pokemon* criar_time(int tamanho){
 
     return time;
 }
-    void erro_ao_inicializar_pokemon(nome_buf, evs_buf, ivs_buf, moves_buf){
-        printf("\n\nO POKEMON %s nao pode ser inicializado!\n\n", nome_buf);
-    }
+void erro_ao_inicializar_pokemon(char *nome_buf){
+    printf("\n\nO POKEMON %s nao pode ser inicializado!\n\n", nome_buf);
+}
 
 
 void iniciar_batalha(Player *player1, Player *player2){
@@ -287,7 +291,7 @@ void aviso_de_preguica_do_dev(){
 
 char* gerar_condicoes_pos_turno(Pokemon *poke, Pokemon *inimigo){
     
-    char string_saida[1000]; 
+    char *string_saida = malloc(sizeof(char) * 1000); 
     strcpy(string_saida, "");
 
     switch (poke->statusCondition.condition)
@@ -305,7 +309,7 @@ char* gerar_condicoes_pos_turno(Pokemon *poke, Pokemon *inimigo){
         int damage = apply_badly_poison(poke);
         strcat(string_saida, poke->nome);
         strcat(string_saida, " tomou "); 
-        sprintf(string_saida, "%.2f", damage/poke->base_stats.base_hp);
+        sprintf(string_saida, "%.2f", (float) (damage/poke->base_stats.base_hp));
         strcat(string_saida,  " %% danos de queimadura!\n");
         poke->statusCondition.turnos++;
     default:
@@ -321,7 +325,7 @@ char* gerar_condicoes_pos_turno(Pokemon *poke, Pokemon *inimigo){
             strcat(string_saida, " teve a vida drenada por Leech Seed!\n");
             break;
         case BIND:
-            cause_bind(poke);
+            cause_bind(poke, i);
             strcat(string_saida, poke->nome);
             strcat(string_saida, " se machucou por Bind!\n");
         default:
@@ -368,5 +372,22 @@ int apply_badly_poison(Pokemon *poke){
     }
     
     return dano_aplicado;
+
+}
+void cause_bind(Pokemon *poke, int indice){
+    
+    if (poke->moveCondition[indice].turnos >= 5 || (poke->moveCondition[indice].turnos == 4 && acerta(50)))
+        retirar_move_condition(poke, BIND, indice);
+    else{
+
+        int dano_recebido = poke->base_stats.base_hp/8;
+
+        if (dano_recebido > poke->actual_stats.base_hp){
+            poke->actual_stats.base_hp = 0;
+        }
+        else poke->actual_stats.base_hp -= dano_recebido;
+
+        
+    } 
 
 }

@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include "headers/pokemon.h"
 #include "headers/utilidades.h"
-
+#include "headers/init_helpers.h"
+#include "headers/erro.h"
 char* init_bst(char *nome){
 
     FILE *arq = achar_string_em_arquivo(nome, "arquivos/pokemons.txt");
@@ -44,8 +45,8 @@ Move* init_moves(char *moves_str){
             return NULL;
         }
 
-        fscanf(arq, "%d %d", &moves[i].type, &moves[i].categoria);
-        fscanf(arq, "%d %d", &moves[i].base_dmg, &moves[i].base_acc);
+        fscanf(arq, "%hd (%hd)", &moves[i].type, &moves[i].categoria);
+        fscanf(arq, "%hd (%hd%%)", &moves[i].base_dmg, &moves[i].base_acc);
         fscanf(arq, "%s %d", funcao_move, &target);
         
         moves[i].nome = strdup(move_str[i]);
@@ -82,7 +83,7 @@ int* init_types(char *nome){
     return init_dualtype(tipo1, tipo2);
 }
 
-int* init_monotype(const char *tipo){
+int* init_monotype( char *tipo){
     FILE* arq = achar_string_em_arquivo(tipo, "arquivos/types.txt");
     int *i = malloc(sizeof(int));
     if (!i) return NULL;
@@ -92,7 +93,7 @@ int* init_monotype(const char *tipo){
     return i;
 }
 
-int* init_dualtype(const char *tipo1, const char *tipo2){
+int* init_dualtype( char *tipo1, char *tipo2){
     int *dualtype = malloc(2 * sizeof(int*));
     if (!dualtype) return NULL;
 

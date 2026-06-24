@@ -125,7 +125,7 @@ typedef struct{
     short int gambiarra_confusion;
 }Pokemon;
 
-Pokemon init_pokemon(char *nome, int *evs, int *ivs, char *moves);
+Pokemon *init_pokemon(char *nome, int *evs, int *ivs, char *moves);
 int* str_stats_to_int_array(char *str);
 void show_info(Pokemon pokemon);
 
@@ -143,7 +143,5 @@ int*  init_types(char *nome);
 char* int_type_to_string(int type);
 int   calc_hp(int base, int ev, int iv);
 int   calc_bst(int base, int ev, int iv);
-char* show_status_condition(int condition);
-char* other_conditions_to_string(MoveCondition *moveCondition);
 char* int_category_to_string(int categoria);
 #endif // POKEMON_H

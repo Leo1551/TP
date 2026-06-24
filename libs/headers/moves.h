@@ -59,7 +59,7 @@ void cause_turn_wait(Pokemon *pokemon, MoveCondition condition);
 
     https://bulbapedia.bulbagarden.net/wiki/Critical_hit#Probability_2
 */
-int will_cause_critical(MoveCondition *conditions, char *effect);
+int will_cause_critical(MoveCondition *conditions, char *effect, int indice);
 
 /*
 
@@ -82,7 +82,7 @@ void cause_status_multiplier_change(Pokemon *pokemon, int tipo, int nivel_modifi
     Não está na forma final, confira: https://www.smogon.com/dex/ss/moves/bind/
 
 */
-void cause_bind(Pokemon *adversario);
+void cause_bind(Pokemon *adversario, int i);
 
 
 /*
@@ -153,7 +153,7 @@ int is_stab(int tipo1, int tipo2, int tipo_move);
 
 int* valores_multiplos_em_parenteses(char *ptr, int qtd);
 int valores_em_parenteses(char *ptr);   
-int acerta(int chance);
+int acerta(double chance);
 void cause_confusion(Pokemon *pokemon);
 void add_move_condition(Pokemon *pokemon, MoveCondition new_condition);
 void cause_recharge(Pokemon *pokemon);
