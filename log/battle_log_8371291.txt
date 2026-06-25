@@ -1,0 +1,36 @@
+==================== PLAYER 1: Leo ====================
+
+[1] ÀöÐÈü
+HP: 282/282
+Atk: (0) 203/203
+Def: (0) 123/123
+SpA: (0) 156/156
+SpD: (0) 136/136
+Spe: (0) 166/166
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Thunder_Punch (Type: 5 | Categoria: 1 | DMG: 75 | ACC: 100.00)
+  2. Barrier (Type: 12 | Categoria: 3 | DMG: 0 | ACC: 999.00)
+  3. Toxic (Type: 8 | Categoria: 3 | DMG: 0 | ACC: 90.00)
+  4. Flamethrower (Type: 2 | Categoria: 2 | DMG: 90 | ACC: 100.00)
+
+
+==================== PLAYER 2: Leo2 ====================
+
+[1] ÀöÐÈü
+HP: 294/294
+Atk: (0) 197/197
+Def: (0) 135/135
+SpA: (0) 166/166
+SpD: (0) 166/166
+Spe: (0) 126/126
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Smokescreen (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 100.00)
+  2. Focus_Energy (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 999.00)
+  3. Night_Shade (Type: 15 | Categoria: 2 | DMG: 100 | ACC: 90.00)
+  4. Dig (Type: 1 | Categoria: 2 | DMG: 90 | ACC: 100.00)
+
+========================================================

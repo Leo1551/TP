@@ -15,10 +15,11 @@ int main(){
     }
     
     // Inicializar jogador 1
+    printf("\n\n+=================(Jogador 1)=====================+\n\n");
     players[0].nome     = inserir_nome();
     players[0].time     = criar_time(tamanho[0]);
     players[0].tam_time = tamanho[0];
-    
+    printf("\n\n+=================(Jogador 2)=====================+\n\n");
     //Inicializar jogador 2
     players[1].nome     = inserir_nome();
     players[1].time     = criar_time(tamanho[1]);

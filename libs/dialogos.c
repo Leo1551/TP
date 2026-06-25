@@ -31,6 +31,7 @@ char* inserir_nome(){
 
 
 Pokemon* criar_time(int tamanho){
+    system("clear");
     if (tamanho <= 0) {
         printf("ERRO: Tamanho de time inválido\n");
         return NULL;
@@ -54,12 +55,13 @@ Pokemon* criar_time(int tamanho){
             limpar_buffer_de_teclado();
             do{
                 printf("\nInsira o nome do seu %dº Pokémon: ", pokemon_adicionados + 1);
-            } while (!fgets(nome_buf, sizeof(nome_buf), stdin) && validar_nome_pokemon(nome_buf));
+                scanf("%s", nome_buf);
+            } while (!validar_nome_pokemon(nome_buf));
             
             
             // Insere EVs
             limpar_buffer_de_teclado();
-            printf("\nInsira os EVs (formato: HP/Atk/Def/Spa/Spd/Speed):\nEx: (252/0/0/4/0/252) máx 252 por stat, total 510");
+            printf("\n\nInsira os EVs (formato: HP/Atk/Def/Spa/Spd/Speed):\nEx: (252/0/0/4/0/252) máx 252 por stat, total 510\n\n");
             evs_buf = init_stats(252, 510);
             
             // Insere IVs
@@ -69,7 +71,7 @@ Pokemon* criar_time(int tamanho){
             
             limpar_buffer_de_teclado();
             do{
-                printf("\nInsira os moves (separados por /):\n");
+                printf("\nInsira os moves (Captalizado e separado por /):\n\tEx: Thunder Punch/Fire Punch/Thunderbolt/Ice Punch\n");
             } while(!fgets(moves_buf, sizeof(moves_buf), stdin));
             
             // Aplicar terminador em tudo
@@ -219,6 +221,7 @@ int captar_indice_move(Pokemon *poke){
         scanf("%24s", move_usado);
         
         capitalizarPalavras(move_usado);
+        substituir_espaco_por_underline(move_usado);
         indice = search_indice_move(poke->moves, move_usado);
 
         if (poke->moves[indice].blocked_turns > 0){

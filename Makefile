@@ -1,10 +1,11 @@
+.PHONY: all clean run
+
 CC=gcc
 CFLAGS=-Wall -g
 INCLUDE=-Ilibs
 TARGET=main
 SRCS=main.c libs/*.c
 
-.PHONY: all clean run
 
 all: $(TARGET)
 

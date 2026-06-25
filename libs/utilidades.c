@@ -26,37 +26,33 @@ char* show_status_condition(SCondition condition){
     }
 }
 
-char *int_type_to_string(int type)
-{
-    char *tipo_convertido = malloc(sizeof(char) * 12);
-    char *tipo_search = malloc(sizeof(char) * 20);
-
-    if (tipo_convertido == NULL || tipo_search == NULL)
+char *int_type_to_string(int type){
+    switch (type)
     {
-        free(tipo_convertido);
-        free(tipo_search);
-        return NULL;
+        case 1: return "Normal";
+        case 2: return "Fire";
+        case 3: return "Water";
+        case 4: return "Grass";
+        case 5: return "Electric";
+        case 6: return "Ice";
+        case 7: return "Fighting";
+        case 8: return "Poison";
+        case 9: return "Ground";
+        case 10: return "Rock";
+        case 11: return "Flying";
+        case 12: return "Psychic";
+        case 13: return "Bug";
+        case 14: return "Ghost";
+        case 15: return "Steel";
+        case 16: return "Dragon";
+        case 17: return "Dark";
+        case 18: return "Fairy";
+        default: return "Unknown";
     }
-
-    snprintf(tipo_convertido, 12, "%d", type);
-
-    FILE *arq = achar_string_em_arquivo(tipo_convertido, "arquivos/types.txt");
-
-    free(tipo_convertido);
-
-    if (arq == NULL)
-    {
-        free(tipo_search);
-        return NULL;
-    }
-
-    fscanf(arq, "%19s", tipo_search);
-
-    fclose(arq);
-
-    return tipo_search;
 }
+
 char* int_category_to_string(int categoria){
+
     switch (categoria)
     {
         case 1:  return "Physical";
@@ -67,23 +63,21 @@ char* int_category_to_string(int categoria){
 }
 
 void capitalizarPalavras(char *str) {
-    int novaPalavra = 1; // Flag para indicar início de palavra
-    
-    for (int i = 0; str[i] != '\0'; i++) {
-        if (str[i] == ' ') {
-            novaPalavra = 1;
-        } else {
-            if (novaPalavra) { // Capitaliza a primeira letra da palavra
-                if (str[i] >= 'a' && str[i] <= 'z')
-                    str[i] = str[i] - 32;
-                    
-                novaPalavra = 0;
-            } else // Minúsculas para o restante
-                if (str[i] >= 'A' && str[i] <= 'Z') 
-                    str[i] = str[i] + 32;
-                
-            
+int inicio_palavra = 1;
+
+    while (*str) {
+        if (isspace((unsigned char)*str) || *str == '/') {
+            inicio_palavra = 1;
         }
+        else if (inicio_palavra) {
+            *str = toupper((unsigned char)*str);
+            inicio_palavra = 0;
+        }
+        else {
+            *str = tolower((unsigned char)*str);
+        }
+
+        str++;
     }
 }
 
@@ -99,28 +93,50 @@ void trocar_quebra_de_linha_por_terminador(char *str){
 }
 
 FILE* achar_string_em_arquivo(const char *nome, char *filename){
+    
     FILE *f = fopen(filename, "r");
-    if (!f) arquivo_nao_encontrado_exception(filename);
-    
-    char buffer[100];
+    if (!f) return NULL;
 
-    while (fscanf(f, " %63[^ ]", buffer) == 1)
-        if (strcmp(buffer, nome) == 0) 
-            return f;
-    
+    size_t len = strlen(nome);
+
+    int c;
+
+    while ((c = fgetc(f)) != EOF)
+    {
+        if (c == nome[0])
+        {
+            long pos = ftell(f) - 1;
+
+            int i;
+            for (i = 1; i < len; i++)
+            {
+                c = fgetc(f);
+                if (c == EOF || c != nome[i])
+                    break;
+            }
+
+            if (i == len)
+            {
+                // encontrou a string inteira
+                return f; // ponteiro já está logo após a string
+            }
+
+            // não era match → volta para continuar busca corretamente
+            fseek(f, pos + 1, SEEK_SET);
+        }
+    }
+
     fclose(f);
-    string_nao_encontrada_exception(nome, filename);
     return NULL;
 }
 
-int calc_bst(int bst, int ev, int iv){// todos os pokes são lv 100
-    // esses (int) são pra fazer a função floor
-    return 5 + (100 * (int) (((2 * (bst + iv)) + (int) (ev/4) + 5)/100));
+int calc_bst(int bst, int ev, int iv)
+{
+    return (2 * bst + iv + ev / 4) + 5;
 }
-
-int calc_hp(int bst, int ev, int iv){// todos os pokes são lv 100   
-    // esses (int) são pra fazer a função floor
-    return (100 * (int) (((2 * (bst + iv)) + (int) (ev/4) + 100)/100)) + 100 + 10;
+int calc_hp(int bst, int ev, int iv)
+{
+    return (2 * bst + iv + ev / 4) + 110;
 }
 
 int search_indice_move(Move *moves, char *move){

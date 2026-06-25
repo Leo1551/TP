@@ -5,37 +5,48 @@
 #include "headers/utilidades.h"
 #include "headers/init_helpers.h"
 #include "headers/erro.h"
+
 char* init_bst(char *nome){
-
-    FILE *arq = achar_string_em_arquivo(nome, "arquivos/pokemons.txt");
+    FILE *arq = fopen("arquivos/pokemons.txt", "r");
     if (!arq) return NULL;
-    
-    char *buffer = malloc(100 * sizeof(char));
-    if (!buffer) return NULL;
 
-    // passa reto pelo typing
-    fscanf(arq, "%99[^ ]", buffer);
-    
-    //captura base_stats
-    fscanf(arq, "%99[^\n]", buffer);
-    
+    char linha[200];
+
+    while (fgets(linha, sizeof(linha), arq)){
+        char nome_arq[50];
+        char tipos[50];
+        char stats[100];
+
+        sscanf(linha, "%49s %49s %99s", nome_arq, tipos, stats);
+
+        if (strcmp(nome_arq, nome) == 0){
+            fclose(arq);
+
+            char *resultado = strdup(stats);
+            return resultado;
+        }
+    }
+
     fclose(arq);
-    return buffer;
+    return NULL;
 }
-
 
 
 Move* init_moves(char *moves_str){
 
     substituir_espaco_por_underline(moves_str);
+    printf("\nMoves: %s\n\n", moves_str);
     Move *moves = malloc(4 * sizeof(Move));
     if (!moves) return NULL;
     
     char move_str[4][100];
     char funcao_move[100];
     int target;
-    sscanf(moves_str, "%[^/] %[^/] %[^/] %[^\n]", move_str[0], move_str[1], move_str[2], move_str[3]);
+    sscanf(moves_str, "%99[^/]/%99[^/]/%99[^/]/%99[^/]", move_str[0], move_str[1], move_str[2], move_str[3]);
 
+    for (int i = 0; i < 4; i++)
+        printf("move %d: %s\n",i, move_str[i]);
+    
 
     for (int i = 0; i < 4; i++){
         FILE *arq = achar_string_em_arquivo(move_str[i], "arquivos/moves.txt");
@@ -45,9 +56,16 @@ Move* init_moves(char *moves_str){
             return NULL;
         }
 
-        fscanf(arq, "%hd (%hd)", &moves[i].type, &moves[i].categoria);
-        fscanf(arq, "%hd (%hd%%)", &moves[i].base_dmg, &moves[i].base_acc);
-        fscanf(arq, "%s %d", funcao_move, &target);
+        int categoria_tmp;
+
+        fscanf(arq, "%hd %d",&moves[i].type, &categoria_tmp);
+
+        moves[i].categoria = (Categoria)categoria_tmp;
+        // Como categoria é um ENUM, isso evita que coisas estranhas ocorram com o cast certo
+
+
+        
+        fscanf(arq, "%hd %hd %s %d", &moves[i].base_dmg, &moves[i].base_acc, funcao_move, &target);
         
         moves[i].nome = strdup(move_str[i]);
         moves[i].funcao_move = strdup(funcao_move);
@@ -80,15 +98,21 @@ int* init_types(char *nome){
     
     if (strcmp(tipo1, tipo2) == 0) 
         return init_monotype(tipo1);
+
+    printf("\nInit_dualtype\n");
     return init_dualtype(tipo1, tipo2);
 }
 
-int* init_monotype( char *tipo){
+int* init_monotype(char *tipo){
     FILE* arq = achar_string_em_arquivo(tipo, "arquivos/types.txt");
-    int *i = malloc(sizeof(int));
+    int *i = malloc(sizeof(int) * 2);
     if (!i) return NULL;
 
     fscanf(arq, "%d", i);
+
+    //isso garante que não haja problemas futuros
+    i[1] = i[0];
+
     fclose(arq);
     return i;
 }
