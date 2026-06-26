@@ -1,0 +1,88 @@
+==================== PLAYER 1: a ====================
+
+[1] Muk
+HP: 320/320
+Atk: (0) 215/215
+Def: (0) 155/155
+SpA: (0) 135/135
+SpD: (0) 205/205
+Spe: (0) 105/105
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Sludge (Type: 8 | Categoria: 2 | DMG: 65 | ACC: 100.00)
+  2. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  3. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  4. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+
+[2] Mew
+HP: 310/310
+Atk: (0) 205/205
+Def: (0) 205/205
+SpA: (0) 205/205
+SpD: (0) 205/205
+Spe: (0) 205/205
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Psychic (Type: 12 | Categoria: 2 | DMG: 90 | ACC: 100.00)
+  2. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  3. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  4. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+==================== PLAYER 2: b ====================
+
+[1] Tangela
+HP: 240/240
+Atk: (0) 115/115
+Def: (0) 235/235
+SpA: (0) 205/205
+SpD: (0) 85/85
+Spe: (0) 125/125
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Razor_Leaf (Type: 4 | Categoria: 1 | DMG: 55 | ACC: 95.00)
+  2. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  3. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  4. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+
+[2] Paras
+HP: 180/180
+Atk: (0) 145/145
+Def: (0) 115/115
+SpA: (0) 95/95
+SpD: (0) 115/115
+Spe: (0) 55/55
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Recover (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 999.00)
+  2. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  3. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  4. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+
+========================================================
+
+
+*******************Turno 1*******************
+
+Muk lost 0.00% of its HP!
+
+Tangela lost 0.00% of its HP!
+
+Tangela desmaiou!
+
+
+
+*******************Turno 3*******************
+
+Paras lost 0.00% of its HP!
+
+
+
+*******************Turno 4*******************
+
+Paras lost 0.00% of its HP!
+
+Paras desmaiou!
+

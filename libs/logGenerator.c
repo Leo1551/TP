@@ -22,14 +22,15 @@ char* gerar_log_pre_batalha(Player *player1, Player *player2){
 
     // Exibe e armazena dados do Player 1
     fprintf(arquivo, "==================== PLAYER 1: %s ====================\n", player1->nome);
-    printf("==================== PLAYER 1: %s ====================\n", player1->nome);
-    
+    printf("=====================(PLAYER 1) %s  X %s (PLAYER 2)====================\n", player1->nome, player2->nome);
+
+    printf("\n\n%s\n\n", player1->time[0].nome);
+    system("sleep 3");
     for (unsigned int i = 0; i < player1->tam_time; i++)
         log_exibir_player(arquivo, player1, i);
 
     // Exibe e armazena dados do Player 2
-    fprintf(arquivo, "\n\n==================== PLAYER 2: %s ====================\n", player2->nome);
-    printf("\n\n==================== PLAYER 2: %s ====================\n", player2->nome);
+    fprintf(arquivo, "==================== PLAYER 2: %s ====================\n", player2->nome);
     
     for (unsigned int i = 0; i < player2->tam_time; i++)
         log_exibir_player(arquivo, player2, i);
@@ -97,8 +98,6 @@ void log_exibir_player(FILE *arquivo, Player *player, int i){
 
     Pokemon poke = player->time[i];
         
-        show_info(poke);
-
         // Nome e tipos
         fprintf(arquivo, "\n[%u] %s\n", i + 1, poke.nome);
         
@@ -145,13 +144,20 @@ void log_exibir_player(FILE *arquivo, Player *player, int i){
             }
             else fprintf(arquivo, " - \n");
 
+    
 
 }
 
 void gerar_log_turno(char *acoes, char *farq){
     FILE *arq = fopen(farq, "a");
 
-    fprintf(arq, acoes);
+    if (!arq)
+        printf("\nerro grave: O ARQUIVO NÃO ABRIU\n");
+    
+
+    fputs(acoes, arq);
+
+    fclose(arq);
 }
 
 void gerar_log_vencedor_batalha(Player *player, char *farq, int num_player){
@@ -163,6 +169,9 @@ void gerar_log_vencedor_batalha(Player *player, char *farq, int num_player){
     for (int i = 0; i < player->tam_time; i++)
         log_exibir_player(arq, player, i);
     
+    printf("\n\n\nCONFIRA A LOG: %s\n\n\n", farq);
+
+    fclose(arq);
 
 }
 

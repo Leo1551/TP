@@ -31,9 +31,13 @@ int* str_stats_to_int_array(char *str)
     return valores;
 }
 
-Pokemon *init_pokemon(char *nome, int *evs, int *ivs, char *moves){
+Pokemon *init_pokemon(char *nome_poke, int *evs, int *ivs, char *moves){
     
-    printf("============================\n\nPokemon: %s\nIVs:(", nome);
+
+    int *bst = str_stats_to_int_array(init_bst(nome_poke));
+    
+    /* debug
+    printf("============================\n\nPokemon: %s\nIVs:(", nome_poke);
     for (int i = 0; i < 6; i++)
         printf("%d/", evs[i]);
     printf(")\nIVs:(");    
@@ -41,30 +45,34 @@ Pokemon *init_pokemon(char *nome, int *evs, int *ivs, char *moves){
         printf("%d/", ivs[i]);
     printf(")\nMoves:%s\n\n=========================\n", moves);
 
-    int *bst = str_stats_to_int_array(init_bst(nome));
+    
 
-    printf("%s base stats:(", nome);
+    printf("%s base stats:(", nome_poke);
     for(int i = 0; i < 6; i++)
         printf("%d/", bst[i]);
     printf(")\n");
+    system("sleep 10");
+    */
+    
+
     if (bst == NULL){
-        nome_pokemon_exception(nome);
+        nome_pokemon_exception(nome_poke);
         return &(Pokemon){NULL};
     }
-        
+
     
     Move *move = init_moves(moves);
-    int *types = init_types(nome);
+    int *types = init_types(nome_poke);
 
     if (types == NULL)
-        tipos_exception(nome);
+        tipos_exception(nome_poke);
     
-    printf("DEBUG: Tipos carregados para %s: tipo1=%s, tipo2=%s\n", nome, int_type_to_string(types[0]), int_type_to_string(types[1]));
+    printf("DEBUG: Tipos carregados para %s: tipo1=%s, tipo2=%s\n", nome_poke, int_type_to_string(types[0]), int_type_to_string(types[1]));
 
     Pokemon *pokemon = malloc(sizeof(Pokemon));    
 
     *pokemon = (Pokemon){
-        .nome = nome,
+        .nome = strdup(nome_poke),
         .base_stats      = { //esses serão constantes
                                 calc_hp (bst[0], evs[0], ivs[0]), // hp
                                 calc_bst(bst[1], evs[1], ivs[1]), // atk
@@ -103,7 +111,6 @@ Pokemon *init_pokemon(char *nome, int *evs, int *ivs, char *moves){
 
     validar_pokemon_inicializado(pokemon, pokemon->nome);
 
-    show_info(*pokemon);
     free(bst);
     free(ivs);
     free(evs);

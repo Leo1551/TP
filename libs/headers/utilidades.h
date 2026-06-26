@@ -46,7 +46,7 @@ void effect_calc(Pokemon *ataca, Pokemon *recebe, char *str_effect, char *log);
         - Efetividade de tipagem
         - STAB (Same Type Attack Bonus)
 */
-int modificadores(Pokemon *ataca, Pokemon *recebe, int indice);
+double modificadores(Pokemon *ataca, Pokemon *recebe, int indice);
 /*
     Retorna quem vai atacar quem primeiro, em caso de empate, a decisão será randômica
 */
@@ -55,12 +55,12 @@ int prioridade_por_velocidade(short int a, short int b);
 /*
     
 */
-int calcula_super_efetividade(short int type_ataca, Pokemon *recebe);
+double calcula_super_efetividade(short int type_ataca, Pokemon *recebe);
 
 /*
     Calcula o multiplicador de quão efetivo é o move contra o adversário
 */
-int super_efetividade_monotype(short int type_ataca, short int type_defende);
+double super_efetividade_monotype(short int type_ataca, short int type_defende);
 
 /*  
     Calcula se o movimento acertou
@@ -76,5 +76,8 @@ void retirar_move_condition(Pokemon *poke, MCondition condition, int i);
 
 //verifica se é possível atacar pokemon adversário
 int consegue_atacar(Pokemon *ataca, char *log);
+
+//Caso tenha espaços faltando (Thunder/Thunderbolt) -> (Thunder/Thunderbolt/-/-)
+int completar_moves(char *moves_buf, int tam);
 
 #endif // UTILIDADES_H

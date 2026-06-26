@@ -7,7 +7,7 @@
 #include "headers/pokemon.h"
 #include "headers/erro.h"
 
-void limpar_buffer_de_teclado(){
+void limpar_buffer_de_teclado(){    
     short int c; while ((c = getchar()) != '\n' && c != EOF);
 }
 
@@ -115,13 +115,19 @@ FILE* achar_string_em_arquivo(const char *nome, char *filename){
                     break;
             }
 
-            if (i == len)
-            {
+            if (i == len){
+                char c = fgetc(f);
+                //volta 0, pois averigou se a string acabou ou nao
+                if (!(c == ' ' || c == '\n' || c == '\0'))
+                    continue;
+                
+                
+                fseek(f, -1, SEEK_CUR);
                 // encontrou a string inteira
                 return f; // ponteiro já está logo após a string
             }
 
-            // não era match → volta para continuar busca corretamente
+            // não era match -> volta para continuar busca corretamente
             fseek(f, pos + 1, SEEK_SET);
         }
     }
@@ -190,8 +196,7 @@ void move_calc(Pokemon *ataca, Pokemon *recebe, int indice_move, char *log){
     if (!acertou_movimento(ataca, recebe, indice_move, log))    
         return;
     
-    int dano_bruto; // necessário para effect_calc
-    dano_bruto = 0;
+    int dano_bruto = 0; // necessário para effect_calc
     
     if (ataca->moves[indice_move].categoria != STATUS)   
         dmg_calc(ataca, recebe, indice_move, log, &dano_bruto);
@@ -199,24 +204,23 @@ void move_calc(Pokemon *ataca, Pokemon *recebe, int indice_move, char *log){
     if (recebe->actual_stats.base_hp > 0)
         cause_move_effect(ataca, recebe, log, indice_move, dano_bruto);
 
-    
 }
 
 int acertou_movimento(Pokemon *ataca, Pokemon *recebe, int indice_move, char *log){
 
     int chance_final = ataca->moves[indice_move].base_acc * calcular_nivel_multiplicador_accuracy(ataca->multi.m_acc) * calcular_nivel_multiplicador_evasion(recebe->multi.m_evasion);
-    
+    char *log_acertou = malloc(sizeof(char) * 500);
     if (ataca->gambiarra_confusion == 1){
         if(!acerta(50))
             {
                 int dano = (int) modificadores(ataca, ataca, 1) * calc_dano_final(40, ataca->actual_stats.base_atk, ataca->actual_stats.base_def);
                 ataca->actual_stats.base_hp -= dano;
                 
-                sprintf(log, "%s se machucou devido a Confusão e perdeu %.2f%% (%d/%d) do HP!\n\n", ataca->nome, (float) (dano/ataca->base_stats.base_hp), dano, ataca->base_stats.base_hp);
+                sprintf(log_acertou, "%s se machucou devido a Confusão e perdeu %.2f%% (%d/%d) do HP!\n\n", ataca->nome, (float) (dano/ataca->base_stats.base_hp), dano, ataca->base_stats.base_hp);
                 return 0;
         }
         else{
-            sprintf("%s se curou da confusao!\n", ataca->nome);
+            sprintf(log_acertou, "%s se curou da confusao!\n", ataca->nome);
             ataca->gambiarra_confusion = 0;
         } 
 
@@ -224,112 +228,153 @@ int acertou_movimento(Pokemon *ataca, Pokemon *recebe, int indice_move, char *lo
     for (int i = 0; i < recebe->tam_move_conditions; i++)
         if (recebe->moveCondition[i].condition == FLYING || recebe->moveCondition[i].condition == DIG || recebe->moveCondition[i].condition == DIVE)
         {
-            strcat(log, recebe->nome);
-            strcat(log, " desviou do movimento adversário\n");
+            strcat(log_acertou, recebe->nome);
+            strcat(log_acertou, " desviou do movimento adversário\n");
+            strcat(log, log_acertou);
+            free(log_acertou);
             return 0;
         }
 
     if (strstr(ataca->moves[indice_move].funcao_move, "Crash")){
-
+    char *log_acertou2 = malloc(sizeof(char) * 200);
         
         if (ataca->base_stats.base_hp/2 > ataca->actual_stats.base_hp){
-            sprintf(log, "%s errou o movimento e recebeu perdeu %.2f%% (%d/%d) de HP!\n\n", ataca->nome, (float)(ataca->actual_stats.base_hp/ataca->base_stats.base_hp), ataca->actual_stats.base_hp, ataca->base_stats.base_hp);
+            sprintf(log_acertou2, "%s errou o movimento e perdeu %.2f%% (%d/%d) de HP!\n\n", ataca->nome, (float)(ataca->actual_stats.base_hp/ataca->base_stats.base_hp), ataca->actual_stats.base_hp, ataca->base_stats.base_hp);
             ataca->actual_stats.base_hp = 0;
+            strcat(log, log_acertou);
+            strcat(log, log_acertou2);
+            free(log_acertou2);
+            free(log_acertou);
+            return 0;
         }
-
+        
         double porcentagem_perdida = ataca->actual_stats.base_hp / ataca->base_stats.base_hp/2;
-        sprintf(log, "%s errou o movimento e recebeu perdeu %.2f%% (%d/%d) de HP!\n\n", ataca->nome, porcentagem_perdida, ataca->base_stats.base_hp/2, ataca->base_stats.base_hp);
-
+        sprintf(log_acertou2, "%s errou o movimento e perdeu %.2f%% (%d/%d) de HP!\n\n", ataca->nome, porcentagem_perdida, ataca->base_stats.base_hp/2, ataca->base_stats.base_hp);
         ataca->actual_stats.base_hp -= ataca->base_stats.base_hp/2;
-
+            strcat(log, log_acertou);
+            strcat(log, log_acertou2);
+            free(log_acertou2);
+            free(log_acertou);
         return 0;
     }
-        
+    strcat(log, log_acertou);
+    free(log_acertou);
     
-    /*  não lembro pra que eu fiz isso, mas se eu descobrir e tiver as palavras-chave: (Fly, Dig, Dive, Missed), tá salvo
-    if (recebe->moves[indice_move].nome == "Fly" || recebe->moves[indice_move].nome == "Dig" ||recebe->moves[indice_move].nome == "Dive"){
-    
-        strcat(log, "The opposing used ");
-        strcat(log, ataca->moves[indice_move].nome);
-        strcat(log, "!\n (");
-        strcat(log, " but missed!");    
-    
-        return 0
-    }
-    */   
     return ((100 * rand())/RAND_MAX < chance_final) ? 1 : 0;
 }
 
 void dmg_calc(Pokemon *ataca, Pokemon *recebe, int indice, char *log, int *dano_total){
 
-    int dano = ataca->moves->base_dmg;
+    int dano = ataca->moves[indice].base_dmg;
 
+    char *log_damage = malloc(sizeof(char) * 500);
 
     if (ataca->moves[indice].categoria == SPECIAL)
     {
         int special_attack = ataca->actual_stats.base_spa;
         int special_defense = recebe->actual_stats.base_spd;
 
+        printf("\nBase Damage {%s} (ataca): %d", ataca->moves[indice].nome, dano);
+        printf("\nSpecial Attack (ataca): %d", special_attack);
+        printf("\nSpecial Defense (recebe): %d", special_defense);
+
+        int modificador = modificadores(ataca, recebe, indice);
+        int dano_bruto_dmg_calc = calc_dano_final(dano, special_attack, special_defense);
         
-        *dano_total = (int) modificadores(ataca, recebe, indice) * calc_dano_final(dano, special_attack, special_defense);
     
+        *dano_total = (int) modificador * dano_bruto_dmg_calc;
+    
+        printf("Dano Bruto: %d\n", dano_bruto_dmg_calc);
+        printf("Modificadores SPECIAL: %d\n", modificador);
+
     }
     else
     {
         int attack = ataca->actual_stats.base_atk;
         int defense = recebe->actual_stats.base_def;
         
-        *dano_total = (int) modificadores(ataca, recebe, indice) * calc_dano_final(dano, attack, defense);
+        printf("\nBase Damage {%s} (ataca): %d", ataca->moves[indice].nome, dano);
+        printf("\nAttack (ataca): %d", attack);
+        printf("\nDefense (recebe): %d", defense);
+
+        float mod = modificadores(ataca, recebe, indice);
+        int dano_bruto_dmg_calc = calc_dano_final(dano, attack, defense);
+        *dano_total = (int)  (mod * dano_bruto_dmg_calc);
+
+        printf("Dano Bruto: %d\n", dano_bruto_dmg_calc);
+        printf("Modificadores: %.1f\n", mod);
     }
     
+    printf("\n\n\nDANO DADO:%d\n\n\n", *dano_total);
+    printf("HP total: %d\n", recebe->base_stats.base_hp);
+    printf("HP actual: %d", recebe->actual_stats.base_hp);
+    system("sleep 2");
     // 
-    strcat(log, "The opposing used ");
-    strcat(log, ataca->moves[indice].nome);
-    strcat(log, "!\n (");
-    strcat(log, recebe->nome);
-    strcat(log, " lost ");
 
-    // no caso do dano recebido ser maior que o hp, ele não fica com hp negativo
-    double porcentagem_perdida = ((*dano_total > recebe->actual_stats.base_hp) ? (recebe->actual_stats.base_hp) : (*dano_total) / recebe->base_stats.base_hp);
+    double porcentagem_perdida = 0;
 
-    char porcentagem_str[32];
-    sprintf(porcentagem_str, "%.2f", porcentagem_perdida);
-    strcat(log, porcentagem_str);
-    strcat(log, "%% of its health!)\n\n");
-    //
+    if (*dano_total > recebe->actual_stats.base_hp)
+        porcentagem_perdida = (double) (recebe->actual_stats.base_hp)/recebe->base_stats.base_hp;
+    else
+        porcentagem_perdida = (double) (*dano_total)/recebe->base_stats.base_hp;
+        
+    porcentagem_perdida *= 100;
 
-    recebe->actual_stats.base_hp -= *dano_total;
+
+    sprintf(log_damage, "\n\nThe opposing %s used %s!\n%s lost %.2f%% of its HP!\n\n", ataca->nome, ataca->moves[indice].nome, recebe->nome, porcentagem_perdida);
+
+    printf("\nababo\n%s", log_damage);
+    strcat(log, log_damage);
+    free(log_damage);
+    
+    if ((*dano_total > recebe->actual_stats.base_hp))
+        recebe->actual_stats.base_hp = 0;
+    else
+        recebe->actual_stats.base_hp -= *dano_total;
+
+    //Debug
+    system("sleep 2");
 
 }
 
 int calc_dano_final(int dano_bruto, int stat_ofensivo, int stat_defensivo){
-    return 2 + (42 * (dano_bruto * stat_defensivo/stat_defensivo)/50);
+    return 2 + (42 * (dano_bruto * stat_ofensivo/stat_defensivo)/50);
 }
 
-int modificadores(Pokemon *ataca, Pokemon *recebe, int indice){
+double modificadores(Pokemon *ataca, Pokemon *recebe, int indice){
 
-    int multiplicador = 1;
+    float multiplicador = 1;
 
     //STAB
-    if (is_stab(ataca->types[0], ataca->types[1], ataca->moves[indice].type))
+    if (is_stab(ataca->types[0], ataca->types[1], ataca->moves[indice].type)){
         multiplicador *= 1.5;
+
+        printf("\nÉ STAB\n");
+    }
+
+    //Critical hit
+    if (will_cause_critical(ataca->moveCondition, ataca->moves[indice].funcao_move, ataca->tam_move_conditions)){
+        multiplicador *= 1.5;
+        printf("É CRITICAL HIT!\n");
+    }
+        
 
     //multiplicadores de bst
     if (ataca->moves[indice].categoria == SPECIAL)
     {
+
+        printf("Multiplicador por stats: %.1f\n", calcular_nivel_multiplicador(ataca->multi.m_spa)*calcular_nivel_multiplicador(recebe->multi.m_spd));
         multiplicador *= calcular_nivel_multiplicador(ataca->multi.m_spa);
         multiplicador *= calcular_nivel_multiplicador(recebe->multi.m_spd);
     }
     else
     {
+        printf("Multiplicador por stats: %.1f\n", calcular_nivel_multiplicador(ataca->multi.m_atk)*calcular_nivel_multiplicador(recebe->multi.m_def));
         multiplicador *= calcular_nivel_multiplicador(ataca->multi.m_atk);
         multiplicador *= calcular_nivel_multiplicador(recebe->multi.m_def);
     }
-
-    //Critical hit
-    if (will_cause_critical(ataca->moveCondition, ataca->moves[indice].funcao_move, ataca->tam_move_conditions))
-        multiplicador *= 1.5;
-    
+        
+    printf("Multiplicador por super-efetividade: %.1f\n", calcula_super_efetividade(ataca->moves[indice].type, recebe));
     multiplicador *= calcula_super_efetividade(ataca->moves[indice].type, recebe);
     
 
@@ -338,51 +383,56 @@ int modificadores(Pokemon *ataca, Pokemon *recebe, int indice){
     return multiplicador;
 }
 
-int calcula_super_efetividade(short int type_ataca, Pokemon *recebe){
+double calcula_super_efetividade(short int type_ataca, Pokemon *recebe){
 
     if (recebe->types[0] == recebe->types[1])
         return super_efetividade_monotype(type_ataca, recebe->types[0]);
-    
+
+    printf("O ADVERSÁRIO NÃO É MONOTYPE\n");
     return super_efetividade_monotype(type_ataca, recebe->types[0]) * super_efetividade_monotype(type_ataca, recebe->types[1]);
 
 }
 
-int super_efetividade_monotype(short int type_ataca, short int type_defende){
+double super_efetividade_monotype(short int type_ataca, short int type_defende){
     
-    int multiplicador = 1; // dano neutro
 
     char ataca_str[10], defende_str[10];
     sprintf(ataca_str, "%d", type_ataca);
     sprintf(defende_str, "%d", type_defende);
     
-    FILE *arq = fopen("arquivos/types.txt", "r");
-    if (!arq) return 1;
+    FILE *arq_types = fopen("arquivos/types.txt", "r");
+    if (!arq_types) return 1;
     
-    char buffer[200];
+    char buffer[20000];
     int tipo_lido;
 
     // Verifica as propriedades defensivas do type_defende
-    while (fgets(buffer, sizeof(buffer), arq)) {
+    while (fgets(buffer, sizeof(buffer), arq_types)) {
+        
         if (sscanf(buffer, "%d", &tipo_lido) == 1 && tipo_lido == type_defende) {
             // Encontrou o tipo defensor, verifica Weaknesses, Resistances, Immunities
-            while (fgets(buffer, sizeof(buffer), arq)) {
+            while (fgets(buffer, sizeof(buffer), arq_types)) {
                 if (isdigit(buffer[0])) break; // Próximo tipo começou, não altera nada.
                 
                 if (strstr(buffer, "Weaknesses:")) {
                     if (strstr(buffer, ataca_str)) {
-                        fclose(arq);
-                        return multiplicador *= 2; // Super efetivo
+                        fclose(arq_types);
+                        printf("\nDÁ SUPER EFETIVO\n");
+                        return 2; // Super efetivo
                     }
                 }
                 else if (strstr(buffer, "Resistances:")) {
                     if (strstr(buffer, ataca_str)) {
-                        fclose(arq);
-                        return multiplicador *= 0.5; // Resistência (0.5x damage)
+                        printf("\nRESISTE AO MOVIMENTO\n");
+
+                        fclose(arq_types);
+                        return 0.5; // Resistência (0.5x damage)
                     }
                 }
                 else if (strstr(buffer, "Immunities:")) {
                     if (strstr(buffer, ataca_str)) {
-                        fclose(arq);
+                        fclose(arq_types);
+                        printf("\nÉ IMUNE A ISSO\n");
                         return 0; // Imunidade
                     }
                     break; // Fim das propriedades defensivas
@@ -392,8 +442,8 @@ int super_efetividade_monotype(short int type_ataca, short int type_defende){
         }
     }
     
-    fclose(arq);
-    return multiplicador;
+    fclose(arq_types);
+    return 1;
 }
 
 
@@ -406,27 +456,28 @@ int prioridade_por_velocidade(short int a, short int b){
 
 int consegue_atacar(Pokemon *ataca, char *log){
     int consegue = 1;
+    char *log_tentou = malloc(sizeof(char) * 400);
     switch (ataca->statusCondition.condition)
     {
     case OK: break;
     case FREEZE:
         if (acerta(20)){
-            sprintf(log, "%s se descongelou!\n", ataca->nome);
+            sprintf(log_tentou, "%s se descongelou!\n", ataca->nome);
             ataca->statusCondition.condition = OK;
             ataca->statusCondition.turnos = 0;
         }
         else{
-            sprintf(log, "%s está congelado!\n", ataca->nome);
+            sprintf(log_tentou, "%s está congelado!\n", ataca->nome);
             consegue = 0;
         }   
     case SLEEP:
         if (acerta(25)){
-            sprintf(log, "%s despertou!\n", ataca->nome);
+            sprintf(log_tentou, "%s despertou!\n", ataca->nome);
             ataca->statusCondition.condition = OK;
             ataca->statusCondition.turnos = 0;
         }
         else{
-            sprintf(log, "%s está dormindo!\n", ataca->nome);
+            sprintf(log_tentou, "%s está dormindo!\n", ataca->nome);
             consegue = 0;
         }   
     
@@ -440,8 +491,8 @@ int consegue_atacar(Pokemon *ataca, char *log){
         case IN_CHARGE:
 
             if (consegue == 1){
-                strcat(log, ataca->nome);
-                strcat(log, " está carregando o movimento!\n"); 
+                strcat(log_tentou, ataca->nome);
+                strcat(log_tentou, " está carregando o movimento!\n"); 
             }
                 
             if (ataca->moveCondition[i].turnos < 1){
@@ -454,8 +505,8 @@ int consegue_atacar(Pokemon *ataca, char *log){
         case BLASTED:
 
             if (consegue == 1){
-                strcat(log, ataca->nome);
-                strcat(log, " está cansado e não consegue atacar!\n");
+                strcat(log_tentou, ataca->nome);
+                strcat(log_tentou, " está cansado e não consegue atacar!\n");
             }
             
             
@@ -473,16 +524,16 @@ int consegue_atacar(Pokemon *ataca, char *log){
             retirar_move_condition(ataca, DIVE, i);
             return 1;
         case BIDE:
-            strcat(log, ataca->nome);
-            sprintf(log, "está se preparando para o contra-ataque (turnos restantes: %d)", ataca->moveCondition->turnos);
+            strcat(log_tentou, ataca->nome);
+            sprintf(log_tentou, "está se preparando para o contra-ataque (turnos restantes: %d)", ataca->moveCondition->turnos);
             if (ataca->moveCondition[i].turnos == 1)
                 retirar_move_condition(ataca, BIDE, i);
             else ataca->moveCondition[i].turnos--;
         case FLINCH: 
             if (consegue == 1){            
-            strcat(log, "O oponente ");
-            strcat(log, ataca->nome);
-            strcat(log, " hesitou e não pode se mover!\n");
+            strcat(log_tentou, "O oponente ");
+            strcat(log_tentou, ataca->nome);
+            strcat(log_tentou, " hesitou e não pode se mover!\n");
             }
             retirar_move_condition(ataca, FLINCH, i);
         default:
@@ -490,6 +541,9 @@ int consegue_atacar(Pokemon *ataca, char *log){
         }
     }
 
+    printf("%s", log_tentou);
+    strcat(log, log_tentou);
+    free(log_tentou);
     return 1;
 }
 
@@ -501,4 +555,23 @@ int acerta(double chance_base_acerto){
 // o único problema disso é que ele pode chegar no tamanho máximo de condições = menos de 10
 void retirar_move_condition(Pokemon *poke, MCondition condition, int i){
     poke->moveCondition[i].condition = NONE;
+}
+
+int completar_moves(char *moves_buf, int tam){
+    moves_buf[strcspn(moves_buf, "\n")] = '\0';
+    int qtd = 1;
+
+    for (int i = 0; moves_buf[i] != '\0'; i++)
+        if (moves_buf[i] == '/')
+            qtd++;
+
+    if (qtd > 4)
+        return 0; 
+
+    while (qtd < 4){
+        strcat(moves_buf, "/-");
+        qtd++;
+    }
+
+    return 1;
 }

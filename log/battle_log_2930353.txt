@@ -1,0 +1,124 @@
+==================== PLAYER 1: aham ====================
+
+[1] Mew
+HP: 310/310
+Atk: (0) 205/205
+Def: (0) 205/205
+SpA: (0) 205/205
+SpD: (0) 205/205
+Spe: (0) 205/205
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Psychic (Type: 12 | Categoria: 2 | DMG: 90 | ACC: 100.00)
+  2. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  3. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  4. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+
+[2] Muk
+HP: 320/320
+Atk: (0) 215/215
+Def: (0) 155/155
+SpA: (0) 135/135
+SpD: (0) 205/205
+Spe: (0) 105/105
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Sludge (Type: 8 | Categoria: 2 | DMG: 65 | ACC: 100.00)
+  2. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  3. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  4. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+==================== PLAYER 2: b ====================
+
+[1] Machamp
+HP: 290/290
+Atk: (0) 265/265
+Def: (0) 165/165
+SpA: (0) 135/135
+SpD: (0) 175/175
+Spe: (0) 115/115
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Thunder_Punch (Type: 5 | Categoria: 1 | DMG: 75 | ACC: 100.00)
+  2. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  3. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  4. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+
+========================================================
+
+
+*******************Turno 1*******************
+
+ yKv yKv yKvüŸÒ
+
+The opposing Machamp used Thunder_Punch!
+Mew lost 26.45% of its HP!
+
+1 Normal 1
+Weaknesses: 7.
+Resistances: .
+Immunities: 14.
+Super_effective: .
+2 Fire 2
+Weaknesses: 9, 10, 3.
+Resistances: 13, 18, 2, 4, 6, 15.
+Immunities: Burn.
+Super_effective: 4, 6, 13, 15.
+3 Water 3
+Weaknesses: 5, 4.
+Resistances: 2, 6, 15, 3.
+Immunities: .
+Super_effective: 2, 9, 10.
+4 Grass 4
+Weaknesses: 13, 2, 11, 6, 8.
+Resistances: 5, 4, 9, 3.
+Immunities: .
+Super_effective: 3, 9, 10.
+5 Electric 5 
+Weaknesses: 9.
+Resistances: 5, 11, 15.
+Immunities: Paralysis.
+Super_effective: 3, 11.
+6 Ice 6
+Weaknesses: 7, 2, 10, 15.
+Resistances: 6.
+Immunities: Freeze.
+Super_effective: 4, 9, 11, 16.
+7 Fighting 7
+Weaknesses: 18, 11, 12.
+Resistances: 13, 17, 10.
+Immunities: .
+Super_effective: 1, 6, 10, 15, 17.
+8 Poison 8
+Weaknesses: 9, 12.
+Resistances: 13, 18, 7, 4, 8.
+Immunities: Toxic.
+Super_effective: 4, 18.
+9 Ground 9
+Weaknesses: 4, 6, 3.
+Resistances: 8, 10.
+Immunities: 5.
+Super_effective: 2, 5, 8, 10, 15.
+10 Rock 10
+Weaknesses: 7, 4, 9, 15, 3.
+Resistances: 2, 11, 1, 8.
+Immunities: .
+Super_effectiveq yKv yKv
+
+*******************Turno 2*******************
+
+üŸÒ Ò
+
+The opposing Mew used Psychic!
+Machamp lost 100.00% of its HP!
+
+Machamp desmaiou!
+
+Machamp desmaiou!
+
+===========================
+
+O VENCEDOR Ã‰ O PLAYER 1!!
+

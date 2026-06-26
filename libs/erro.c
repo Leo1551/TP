@@ -66,6 +66,13 @@ int validar_nome_player(char *nome) {
 
 int validar_nome_pokemon(char *nome) {
     trocar_quebra_de_linha_por_terminador(nome);
+
+    if (achar_string_em_arquivo(nome, "arquivos/pokemons.txt") == NULL){
+        printf("\n\nERRO: O pokémon \'%s\' nao foi encontrado!\n\n", nome);
+
+        return 0;
+    }
+    
     if (nome == NULL) {
         printf("\n\n ERRO: Nome do Pokémon é nulo\n\n");
         return 0;

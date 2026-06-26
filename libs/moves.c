@@ -13,7 +13,8 @@ int is_stab(int tipo1, int tipo2, int tipo_move) {
 void cause_move_effect(Pokemon *ataca, Pokemon *recebe, char *log, int indice_move, int dano_bruto) {
 
     char *str = ataca->moves[indice_move].funcao_move;
-
+    char *string_cause_effect = malloc(sizeof(char) * 1000);
+    
     if (str == NULL || strlen(str) == 0) return;
     
     // Copia a string para strtok não modificar a original
@@ -30,26 +31,26 @@ void cause_move_effect(Pokemon *ataca, Pokemon *recebe, char *log, int indice_mo
         // Identifica e chama a função apropriada baseado no efeito
         if(strstr(ptr, "Burn") && recebe->statusCondition.condition == OK && recebe->types[0] != 1 && recebe->types[1] != 1) {
             int chance_acerto = valores_em_parenteses(ptr);
-            cause_status_condition(recebe, BURN, chance_acerto, log);
+            cause_status_condition(recebe, BURN, chance_acerto, string_cause_effect);
         }
         else if(strstr(ptr, "Paralyze") && recebe->statusCondition.condition == OK && recebe->types[0] != 5 && recebe->types[1] != 5) {
             int chance_acerto = valores_em_parenteses(ptr);
-            cause_status_condition(recebe, PARALYZE, chance_acerto, log);
+            cause_status_condition(recebe, PARALYZE, chance_acerto, string_cause_effect);
         }
         else if(strstr(ptr, "Sleep") && recebe->statusCondition.condition == OK) {
             int chance_acerto = valores_em_parenteses(ptr);
-            cause_status_condition(recebe, SLEEP, chance_acerto, log);
+            cause_status_condition(recebe, SLEEP, chance_acerto, string_cause_effect);
         }
         else if(strstr(ptr, "Freeze") && recebe->statusCondition.condition == OK && recebe->types[0] != 6 && recebe->types[1] != 6){
             int chance_acerto = valores_em_parenteses(ptr);
-            cause_status_condition(recebe, FREEZE, chance_acerto, log);
+            cause_status_condition(recebe, FREEZE, chance_acerto, string_cause_effect);
         }
         else if(strstr(ptr, "BadlyPoison") && recebe->statusCondition.condition == OK && recebe->types[0] != 8 && recebe->types[1] != 8){
-            cause_status_condition(recebe, BADLY_POISON, 100, log);
+            cause_status_condition(recebe, BADLY_POISON, 100, string_cause_effect);
         }
         else if(strstr(ptr, "Poison") && recebe->statusCondition.condition == OK && recebe->types[0] != 8 && recebe->types[1] != 8){
             int chance_acerto = valores_em_parenteses(ptr);
-            cause_status_condition(recebe, POISON, chance_acerto, log);
+            cause_status_condition(recebe, POISON, chance_acerto, string_cause_effect);
         }
         else if(strstr(ptr, "Confuse")){
             int chance_acerto = valores_em_parenteses(ptr);
@@ -64,7 +65,7 @@ void cause_move_effect(Pokemon *ataca, Pokemon *recebe, char *log, int indice_mo
             
         }
         else if(strstr(ptr, "MultiHit")){
-            cause_2_5_multihit(ataca, recebe, indice_move, log);
+            cause_2_5_multihit(ataca, recebe, indice_move, string_cause_effect);
         }
         else if(strstr(ptr, "FixedDamage")){
             int dano_fixo = valores_em_parenteses(ptr);
@@ -91,7 +92,7 @@ void cause_move_effect(Pokemon *ataca, Pokemon *recebe, char *log, int indice_mo
 
             // -1 pois o primeiro hit já foi
             for (int i = 0; i < qtd_hits -1; i++)
-                dmg_calc(ataca, recebe, indice_move, log, &dano_bruto);
+                dmg_calc(ataca, recebe, indice_move, string_cause_effect, &dano_bruto);
             
         }
         else if(strstr(ptr, "Disable")){
@@ -107,6 +108,7 @@ void cause_move_effect(Pokemon *ataca, Pokemon *recebe, char *log, int indice_mo
             cause_leechseed(recebe, ataca);
         }
         else if(strstr(ptr, "Recover")){
+            sprintf(string_cause_effect, "%s usou Recover!\n HP(%d -> %d)\n\n", ataca->nome, ataca->actual_stats.base_hp, ataca->actual_stats.base_hp + (ataca->base_stats.base_hp/2));
             ataca->actual_stats.base_hp += ataca->base_stats.base_hp/2;
         }
         else if(strstr(ptr, "Mimic")){
@@ -134,8 +136,8 @@ void cause_move_effect(Pokemon *ataca, Pokemon *recebe, char *log, int indice_mo
         }
         else if(strstr(ptr, "Dive")){
 
-            strcat(log, ataca->nome);
-            strcat(log, " está bem fundo na água!\n");
+            strcat(string_cause_effect, ataca->nome);
+            strcat(string_cause_effect, " está bem fundo na água!\n");
             *(ataca->moveCondition) = (MoveCondition){DIVE, 1};
         }
         else if(strstr(ptr, "Dig")){
@@ -143,14 +145,16 @@ void cause_move_effect(Pokemon *ataca, Pokemon *recebe, char *log, int indice_mo
         }
         else if(strstr(ptr, "cause_fly")){
             cause_turn_wait(ataca, (MoveCondition){FLYING, 1});
-            strcat(log, ataca->nome);
-            strcat(log, " está bem alto nos céus!");
+            strcat(string_cause_effect, ataca->nome);
+            strcat(string_cause_effect, " está bem alto nos céus!");
         }
         else if(strstr(ptr, "cause_dig")){
             cause_turn_wait(ataca, (MoveCondition){DIG, 1});
+
         }
         else if(strstr(ptr, "OHKO")){
             recebe->actual_stats.base_hp = 0;
+            strcat(string_cause_effect, "Tomou OHKO!");
         }
         else if(strstr(ptr, "Blasted")){
             cause_recharge(ataca);
@@ -163,19 +167,30 @@ void cause_move_effect(Pokemon *ataca, Pokemon *recebe, char *log, int indice_mo
         token = strtok(NULL, "->");
     }
     
+    printf("%s", string_cause_effect);
+
+    strcat(log, string_cause_effect);
+
+
     free(copy);
 }
 
 void cause_status_condition(Pokemon *pokemon, SCondition tipo, float chance_base_acerto, char *log){
-    
-    if (acerta(chance_base_acerto)){
-        sprintf(log, "O oponente %s recebeu %s!\n", pokemon->nome, show_status_condition(tipo));
+    char *log_status_condition = malloc(sizeof(char) * 100);
+    if (pokemon->statusCondition.condition != OK){
+        sprintf(log_status_condition, "O Pokémon oponente já está sob outra Status Condition(%s)\n\n", show_status_condition(pokemon->statusCondition.condition));
+        strcat(log, log_status_condition);
         return;
     }
-        
     
-    pokemon->statusCondition.condition = tipo;
-    pokemon->statusCondition.turnos = 0;
+    if (acerta(chance_base_acerto)){
+        sprintf(log_status_condition, "O oponente %s recebeu %s!\n", pokemon->nome, show_status_condition(tipo));
+        strcat(log, log_status_condition);
+        pokemon->statusCondition.condition = tipo;
+        pokemon->statusCondition.turnos = 0;
+        return;
+    }
+    
 }
 
 void cause_confusion(Pokemon *pokemon){

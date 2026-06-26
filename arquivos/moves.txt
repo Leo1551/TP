@@ -1,5 +1,7 @@
 Nome             Type  Category  Base Damage  Accuracy  Effect                                Target
 
+-                   1        3  0            0        None                                     1
+
 Pound               1        1 40           100       None                                     1
 
 Karate_Chop         7        1 50           100       high_crit                                1
@@ -164,7 +166,7 @@ Thunderbolt         5        2 90           100       Paralyze(10)              
 
 Thunder_Wave        5        3 0            90        Paralyze(100)                            1
 
-Thunder             5        2 110          70        Paralyze(100)                            1
+Thunder             5        2 110          70        Paralyze(30)                            1
 
 Rock_Throw         10        1 50           90        None                                     1
 

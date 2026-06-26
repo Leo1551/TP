@@ -1,0 +1,64 @@
+==================== PLAYER 1: a ====================
+
+[1] Muk
+HP: 320/320
+Atk: (0) 215/215
+Def: (0) 155/155
+SpA: (0) 135/135
+SpD: (0) 205/205
+Spe: (0) 105/105
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+ - 
+ - 
+ - 
+ - 
+
+[2] Mew
+HP: 310/310
+Atk: (0) 205/205
+Def: (0) 205/205
+SpA: (0) 205/205
+SpD: (0) 205/205
+Spe: (0) 205/205
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  2. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  3. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  4. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+==================== PLAYER 2: ambrosio ====================
+
+[1] Jolteon
+HP: 240/240
+Atk: (0) 135/135
+Def: (0) 125/125
+SpA: (0) 225/225
+SpD: (0) 195/195
+Spe: (0) 265/265
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Thunder (Type: 5 | Categoria: 2 | DMG: 110 | ACC: 70.00)
+  2. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  3. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  4. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+
+[2] Charizard
+HP: 266/266
+Atk: (0) 173/173
+Def: (0) 161/161
+SpA: (0) 223/223
+SpD: (0) 175/175
+Spe: (0) 205/205
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Flamethrower (Type: 2 | Categoria: 2 | DMG: 90 | ACC: 100.00)
+  2. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  3. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+  4. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+
+========================================================

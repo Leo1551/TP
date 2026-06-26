@@ -9,6 +9,7 @@
 #include "headers/logGenerator.h"
 #include "headers/dialogos.h"
 #include "headers/moves.h"
+
 int* get_tamanho_times(){
     int *qtd = malloc(2 * sizeof(int));
     validar_malloc(qtd, "get_tamanho_times: alocação de qtd");
@@ -40,7 +41,6 @@ Pokemon* criar_time(int tamanho){
     Pokemon *time = malloc(tamanho * sizeof(Pokemon));
     validar_malloc(time, "criar_time: alocação de time");
 
-    char nome_buf[128];
     int* evs_buf = malloc(6 * sizeof(int));
     int* ivs_buf = malloc(6 * sizeof(int));
     char moves_buf[256];
@@ -50,12 +50,15 @@ Pokemon* criar_time(int tamanho){
 
     int pokemon_adicionados = 0;
     
+
     for (int i = 0; i < tamanho; i++){
+            char *nome_buf = malloc(30 * sizeof(char));
 
             limpar_buffer_de_teclado();
             do{
                 printf("\nInsira o nome do seu %dº Pokémon: ", pokemon_adicionados + 1);
                 scanf("%s", nome_buf);
+                capitalizarPalavras(nome_buf);
             } while (!validar_nome_pokemon(nome_buf));
             
             
@@ -64,6 +67,8 @@ Pokemon* criar_time(int tamanho){
             printf("\n\nInsira os EVs (formato: HP/Atk/Def/Spa/Spd/Speed):\nEx: (252/0/0/4/0/252) máx 252 por stat, total 510\n\n");
             evs_buf = init_stats(252, 510);
             
+            system("clear");
+
             // Insere IVs
             limpar_buffer_de_teclado();    
             printf("\nInsira os IVs (formato: HP/Atk/Def/Spa/Spd/Speed):\nEx: (31/31/31/31/31/31) máx 31 por IV");
@@ -72,29 +77,35 @@ Pokemon* criar_time(int tamanho){
             limpar_buffer_de_teclado();
             do{
                 printf("\nInsira os moves (Captalizado e separado por /):\n\tEx: Thunder Punch/Fire Punch/Thunderbolt/Ice Punch\n");
-            } while(!fgets(moves_buf, sizeof(moves_buf), stdin));
+                fgets(moves_buf, sizeof(moves_buf), stdin);
+            } while(!completar_moves(moves_buf, 256));
             
             // Aplicar terminador em tudo
             trocar_quebra_de_linha_por_terminador(moves_buf);
 
             // Capitalizar nome e moves
-            capitalizarPalavras(nome_buf);
             capitalizarPalavras(moves_buf);
 
         Pokemon *poke = init_pokemon(nome_buf, evs_buf, ivs_buf, moves_buf);    
 
         time[i] = *poke;
         free(poke);
+        
 
         if (time[i].nome == NULL){
             erro_ao_inicializar_pokemon(nome_buf);
             i--;
         }
+        pokemon_adicionados++;
+
+        free(nome_buf);
+        printf("\n\nPokémon Feito!\n\n");
         
     }
 
     return time;
 }
+
 void erro_ao_inicializar_pokemon(char *nome_buf){
     printf("\n\nO POKEMON %s nao pode ser inicializado!\n\n", nome_buf);
 }
@@ -105,35 +116,56 @@ void iniciar_batalha(Player *player1, Player *player2){
     char *log = malloc(50000 * sizeof(char));
     validar_malloc(log, "iniciar_batalha: alocação de log");
 
-    system("clear");
+    //system("clear");
     aviso_de_preguica_do_dev();
 
-    int poke_player1 = player1->tam_time - 1;  // Começar pelo primeiro pokémon (índice 0)
-    int poke_player2 = player2->tam_time - 1;
-    int turno_atual = 1;
+    int poke_player1 = 0;  // Começar pelo primeiro pokémon (índice 0)
+    int poke_player2 = 0;
+    int *turno_atual = malloc(sizeof(int));
+    *turno_atual = 1;
 
+    
     // Gerar log pré-batalha
     char *arquivo_log = gerar_log_pre_batalha(player1, player2);
 
 
     // esse while serve para fazer toda a batalha em si, onde o loop só acaba quando um dos dois perderem (ou os dois, ao mesmo tempo)
-    while (player1->tam_time != 0 || player2->tam_time != 0) 
-        switch (quem_vence(&player1->time[poke_player1], &player2->time[poke_player2], &turno_atual, log, arquivo_log))
-        {
-            case 1:
-                poke_player2--;
+    while (1){
+        int vencedor = quem_vence(&player1->time[poke_player1], &player2->time[poke_player2], turno_atual, log, arquivo_log);
+        
+        if (vencedor == 1){
+            if (poke_player2 +1 == player2->tam_time)
                 break;
-            case 2: 
-                poke_player1--;
-                break;
-            default:
-                poke_player1--;
-                poke_player2--;
-                break;
+            else{
+                poke_player2++;
+                continue;
+            }
         }
+        if (vencedor == 2){
+            if (poke_player1 +1 == player1->tam_time)
+                break;
+            else{
+                poke_player1++;
+                continue;
+            }
+        }
+
+        if ((poke_player1 +1 == player1->tam_time) || (poke_player2 +1 == player2->tam_time))
+            break;
+            
+        poke_player1++;
+        poke_player2++;
+        continue;;
+    }
+       
+
+    player1->tam_time -= poke_player1 + 1;
+    player2->tam_time -= poke_player2 + 1;
 
     
     gerar_log_pos_batalha(player1, player2, arquivo_log);
+    free(arquivo_log);
+    free(turno_atual);
     free(log);
     
 }
@@ -145,9 +177,9 @@ void gerar_log_pos_batalha(Player *player1, Player *player2, char *log){
         gerar_log_vencedor_batalha(player2, log, 2);
     }
     else if (player1->tam_time == 0)
-        gerar_log_vencedor_batalha(player1, log, 1);
+        gerar_log_vencedor_batalha(player1, log, 2);
     else
-        gerar_log_vencedor_batalha(player2, log, 2);
+        gerar_log_vencedor_batalha(player2, log, 1);
 
 }
 
@@ -156,17 +188,16 @@ int quem_vence(Pokemon *poke1, Pokemon *poke2, int *turno_atual, char *log, char
 
     while ((*poke1).actual_stats.base_hp >= 1 && (*poke2).actual_stats.base_hp >= 1)
     {
-        char log_turno[10000];
+        char *log_turno = malloc(sizeof(char) * 10000);
         
         gerarTurno(poke1, poke2, turno_atual, log_turno);
 
         gerar_log_turno(log_turno, nome_arquivo);
 
         strcat(log, log_turno);
-        *turno_atual++;
     }
 
-    if ((*poke1).actual_stats.base_hp <= 0 && (*poke2).actual_stats.base_hp)
+    if ((*poke1).actual_stats.base_hp <= 0 && (*poke2).actual_stats.base_hp <= 0)
         return 3;
     if ((*poke1).actual_stats.base_hp <= 0)
         return 2;
@@ -178,7 +209,7 @@ int quem_vence(Pokemon *poke1, Pokemon *poke2, int *turno_atual, char *log, char
 
 void gerarTurno(Pokemon *poke1, Pokemon *poke2, int *turno, char *log){
 
-    sprintf(log, "\n\n_________________Turno %d_____________________\n\n", *turno);
+    sprintf(log, "\n\n*******************Turno %d*******************\n\n", *turno);
     
     printf("%s", log);
     int acao_p1 = captar_indice_move(poke1);
@@ -192,36 +223,37 @@ void gerarTurno(Pokemon *poke1, Pokemon *poke2, int *turno, char *log){
 
     calcular_turno(poke1, acao_p1, poke2, acao_p2, log);
 
-    printf("%s", log);
-
-    system("clear");
+    (*turno)++;
+    //system("sleep 5");
+    //system("clear");
 }
 
 int captar_indice_move(Pokemon *poke){
 
     show_info(*poke);
 
-    printf("\n Qual move você deseja usar? (separe com espaco o nome do move. Ex: Thunder Punch)\nMove: ");
+    printf("\nAVISO: separe com espaco o nome do move. Ex: Thunder Punch\nQual move %s usará?\nOpcoes: ", poke->nome);
 
-    char move_usado[25];
+    char *move_usado = malloc(sizeof(char) * 30);
     int indice = 0;  
-    int tentativas = 0;
 
     do{
 
         if(indice == -1) printf("\nEste move \'%s\' não foi encontrado! Tente novamente ou contate um técnico de TI\n", move_usado);
-
+        
+        //escreve os moves
         for (int i = 0; i < 4; i++)
             printf("%s ", poke->moves[i].nome);
         printf("\n");
-        
-        tentativas++;
-
-        printf("Move: ");
-        scanf("%24s", move_usado);
+                
+        printf("\n\nMove: ");
+        fgets(move_usado, 29, stdin);
+        trocar_quebra_de_linha_por_terminador(move_usado);
         
         capitalizarPalavras(move_usado);
         substituir_espaco_por_underline(move_usado);
+
+        printf("\n\n\n%s\n\n\n", move_usado);
         indice = search_indice_move(poke->moves, move_usado);
 
         if (poke->moves[indice].blocked_turns > 0){
@@ -238,53 +270,78 @@ void calcular_turno(Pokemon *poke1, int move_poke1, Pokemon *poke2, int move_pok
 
     Pokemon *ataca_primeiro = NULL;
     Pokemon *outro = NULL;
+    int indice_ataca_primeiro;
+    int indice_ataca_segundo;
     int prioridade = prioridade_por_velocidade(poke1->actual_stats.base_spe, poke2->actual_stats.base_spe);
-
+    char *log_turno = malloc(sizeof(char) * 100);
     if (prioridade == 1) //define qual poke vai atacar primeiro
     {
         ataca_primeiro = poke1;
+        indice_ataca_primeiro = move_poke1;
+        
         outro = poke2;
+        indice_ataca_segundo = move_poke2;
+
     }
     else
     {
         ataca_primeiro = poke2;
+        indice_ataca_primeiro = move_poke2;
+
         outro = poke1;
+        indice_ataca_segundo = move_poke1;
     }
     
+    int poke1_morto = 0;
+    int poke2_morto = 0;
+
     // AQUI É ONDE TEMOS APENAS O BRUTO, POKÉMON ATACA OUTRO
-    move_calc(ataca_primeiro, outro, (prioridade == 1) ? move_poke1 : move_poke2, log);
+    move_calc(ataca_primeiro, outro, indice_ataca_primeiro, log);
 
-    // se o poke inimigo sobreviveu, ele ataca agora
-    if (outro->actual_stats.base_hp > 0)
-        move_calc(outro, ataca_primeiro, (prioridade == 2) ? move_poke1 : move_poke2, log);
-    else
-    {
-        strcat(log, outro->nome);
-        strcat(log, " desmaiou!\n");
-    }   
-    // CALCULO PÓS TURNO DE QUEM ATACOU PRIMEIRO
-    if (ataca_primeiro->actual_stats.base_hp > 0)
-        strcat(log, gerar_condicoes_pos_turno(ataca_primeiro, outro));
-
-    if (ataca_primeiro->actual_stats.base_hp <= 0)
-    {
-        //Concatena a mensagem de morte
-        strcat(log, ataca_primeiro->nome);
-        strcat(log, " desmaiou!\n");
+    if (ataca_primeiro->actual_stats.base_hp <= 0){
+        poke1_morto = 1;
+        sprintf(log_turno, "%s desmaiou!\n\n", ataca_primeiro->nome);
     }
-    
-    // CALCULO PÓS TURNO DE QUEM ATACOU PRIMEIRO
+    strcat(log, log_turno);
+
+    show_info(*ataca_primeiro);
+    show_info(*outro);
+
     if (outro->actual_stats.base_hp > 0)
-        strcat(log, gerar_condicoes_pos_turno(outro, ataca_primeiro));
+        move_calc(outro, ataca_primeiro, indice_ataca_segundo, log);
+    else{
+        poke2_morto = 1;
+        sprintf(log_turno, "%s desmaiou!\n\n", outro->nome);
+        strcat(log, log_turno);
+    } 
+    //
 
-    if (outro->actual_stats.base_hp <= 0)
-    {
-        //concatena a mensagem de morte
-        strcat(log, outro->nome);
-        strcat(log, " desmaiou!\n");
+
+    // calcula condições pós turno
+    if (ataca_primeiro->actual_stats.base_hp > 0 && !poke1_morto){
+        strcat(log_turno, gerar_condicoes_pos_turno(ataca_primeiro, outro));
+        strcat(log, log_turno);    
     }
+        
     
+    if (ataca_primeiro->actual_stats.base_hp <= 0 && !poke1_morto){
+        sprintf(log_turno, "%s desmaiou!\n\n", ataca_primeiro->nome);
+        strcat(log, log_turno);
+    }
 
+    if (outro->actual_stats.base_hp > 0 && !poke2_morto){
+        strcat(log_turno, gerar_condicoes_pos_turno(outro, ataca_primeiro));
+        strcat(log, log_turno);
+    }
+
+    if (outro->actual_stats.base_hp <= 0 && !poke2_morto){
+        sprintf(log_turno, "%s desmaiou!\n\n", outro->nome);
+        strcat(log, log_turno);
+    }
+
+    free(log_turno);
+    printf("%s", log);
+    system("sleep 5");
 }
 
 
@@ -296,6 +353,10 @@ char* gerar_condicoes_pos_turno(Pokemon *poke, Pokemon *inimigo){
     
     char *string_saida = malloc(sizeof(char) * 1000); 
     strcpy(string_saida, "");
+
+    if (poke->statusCondition.condition == OK)
+        return "";
+    poke->statusCondition.turnos++;
 
     switch (poke->statusCondition.condition)
     {

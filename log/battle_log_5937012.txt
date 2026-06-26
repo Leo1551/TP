@@ -1,0 +1,68 @@
+==================== PLAYER 1: Leo ====================
+
+[1] Dragonair
+HP: 326/326
+Atk: (0) 267/267
+Def: (0) 166/166
+SpA: (0) 176/176
+SpD: (0) 176/176
+Spe: (0) 177/177
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Dragon_Rage (Type: 16 | Categoria: 2 | DMG: 0 | ACC: 100.00)
+  2. Stomp (Type: 1 | Categoria: 1 | DMG: 65 | ACC: 100.00)
+  3. Leech_Seed (Type: 4 | Categoria: 3 | DMG: 0 | ACC: 90.00)
+  4. Thunderbolt (Type: 5 | Categoria: 2 | DMG: 90 | ACC: 100.00)
+
+[2] Mew
+HP: 404/404
+Atk: (0) 205/205
+Def: (0) 236/236
+SpA: (0) 237/237
+SpD: (0) 236/236
+Spe: (0) 299/299
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Thunder_Punch (Type: 5 | Categoria: 1 | DMG: 75 | ACC: 100.00)
+  2. Fire_Punch (Type: 2 | Categoria: 1 | DMG: 75 | ACC: 100.00)
+  3. Thunderbolt (Type: 5 | Categoria: 2 | DMG: 90 | ACC: 100.00)
+  4. Ice_Punch (Type: 6 | Categoria: 1 | DMG: 75 | ACC: 100.00)
+==================== PLAYER 2: Ambifa ====================
+
+[1] Mewtwo
+HP: 353/353
+Atk: (0) 225/225
+Def: (0) 216/216
+SpA: (0) 407/407
+SpD: (0) 217/217
+Spe: (0) 359/359
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Psychic (Type: 12 | Categoria: 2 | DMG: 90 | ACC: 100.00)
+  2. Tri_Attack (Type: 1 | Categoria: 2 | DMG: 80 | ACC: 100.00)
+  3. Harden (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 999.00)
+  4. Thunderbolt (Type: 5 | Categoria: 2 | DMG: 90 | ACC: 100.00)
+
+[2] Jolteon
+HP: 271/271
+Atk: (0) 135/135
+Def: (0) 156/156
+SpA: (0) 319/319
+SpD: (0) 227/227
+Spe: (0) 359/359
+Accuracy: 1.00 | Evasion: 1.00
+Status: Sem status (Turnos: 0)
+--- Moves ---
+  1. Thunderbolt (Type: 5 | Categoria: 2 | DMG: 90 | ACC: 100.00)
+  2. Fissure (Type: 9 | Categoria: 1 | DMG: 0 | ACC: 30.00)
+  3. Hypnosis (Type: 12 | Categoria: 3 | DMG: 0 | ACC: 60.00)
+  4. - (Type: 1 | Categoria: 3 | DMG: 0 | ACC: 0.00)
+
+========================================================
+
+
+*******************Turno 1*******************
+
